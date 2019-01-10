@@ -1,0 +1,38 @@
+.game {
+  border: 10px solid #ffcccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+  background-color: #262626;
+}
+display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+
+nav {
+    color: white;
+    display: inline-block;
+    background-color: #4d4d4d;
+  }
+
+nav a {
+    color: white;
+    text-decoration: none;
+  }
+
+body {
+    color: white;
+    background-color: #ffffff;
+  }
+
+container {
+    color: white;
+    background-color: #4d4d4d;
+    position: relative;
+  }
+.row {
+    color: white;
+    background-color: #4d4d4d;
+  }

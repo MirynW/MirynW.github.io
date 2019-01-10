@@ -1,0 +1,39 @@
+body {
+  color: white;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-color: #4d4d4d;
+}
+
+container {
+  color: white;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-color: #4d4d4d;
+  position: relative;
+}
+.row {
+  color: white;
+  background-color: #4d4d4d;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+}
+
+.jumbotron {
+  display: flex;
+  align-items: center;
+  background-image: url("../images/TrailerIllustrated.jpeg");
+  background-size: cover;
+  color: #ffffff;
+  height: 2000px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+}
+
+nav {
+  color: white;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  display: inline-block;
+  background-color: #4d4d4d;
+}
+nav a {
+  color: white;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  text-decoration: none;
+}
