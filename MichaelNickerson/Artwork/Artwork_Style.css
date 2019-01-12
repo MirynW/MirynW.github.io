@@ -19,6 +19,7 @@ container {
 .jumbotron {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   background-image: url("../images/TrailerIllustrated.jpeg");
   background-size: cover;
   color: #ffffff;
