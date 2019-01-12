@@ -38,3 +38,8 @@ nav a {
   text-shadow: 0.25px 0.25px 0.25px #000000;
   text-decoration: none;
 }
+
+body {
+  display:flex;
+  flex-wrap: wrap;
+}
