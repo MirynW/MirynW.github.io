@@ -17,9 +17,31 @@ container {
   display: flex;
   align-items: center;
   background-image: url("images/IpswitchRockPhoto.jpeg");
-  background-size: cover;
   color: #ffffff;
-  height: 1000px;
+  height: 800px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-repeat: no-repeat;
+background-position: center center;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+
+.rightBar {
+  background-image: url("images/OceanPhoto.jpeg");
+  display: flex;
+  color: #ffffff;
+  height: 800px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+}
+
+.leftBar {
+  margin-top: 30px;
+  background-image: url("images/OceanPhoto.jpeg");
+  display: flex;
+  color: #ffffff;
+  height: 800px;
   text-shadow: 0.25px 0.25px 0.25px #000000;
 }
 

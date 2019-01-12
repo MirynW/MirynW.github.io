@@ -1,15 +1,23 @@
 body {
   color: white;
-  text-shadow: 0.25px 0.25px 0.25px #000000;
-  background-color: #4d4d4d;
+  text-shadow: 0.25px 0.25px 0.25px #ffffff;
+  background-color: #ffffff;
 }
 
 container {
   color: white;
-  text-shadow: 0.25px 0.25px 0.25px #000000;
+  text-shadow: 0.25px 0.25px 0.25px #ffffff;
   background-color: #4d4d4d;
   position: relative;
 }
+
+.HeadAndBodyText {
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  position relative;
+  font-style: normal;
+  font-family: trebuchet;
+}
+
 .row {
   color: white;
   background-color: #4d4d4d;
@@ -19,12 +27,46 @@ container {
 .jumbotron {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  background-image: url("../images/TrailerIllustrated.jpeg");
-  background-size: cover;
+  background-image: url("../images/IpswitchRockPhoto.jpeg");
   color: #ffffff;
-  height: 2000px;
+  height: 800px;
   text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-repeat: no-repeat;
+background-position: center center;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+background-color: #ffffff;
+}
+
+.Image2 {
+  background-image: url("../images/OceanPhoto.jpeg");
+  display: flex;
+  color: #ffffff;
+  height: 800px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-repeat: no-repeat;
+background-position: center center;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+background-color: #ffffff;
+}
+.leftBar {
+  background-image: url("../images/TrailerIllustrated.jpeg");
+  display: flex;
+  color: #ffffff;
+  height: 700px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-repeat: no-repeat;
+  margin-top: 30px;
+background-position: center center;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
 }
 
 nav {
@@ -37,9 +79,4 @@ nav a {
   color: white;
   text-shadow: 0.25px 0.25px 0.25px #000000;
   text-decoration: none;
-}
-
-body {
-  display:flex;
-  flex-wrap: wrap;
 }
