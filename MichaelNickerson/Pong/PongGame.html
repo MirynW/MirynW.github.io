@@ -165,6 +165,7 @@
 			console.log("shotBox" + pBy);
 			pBx = 400-stopX
 			//ONLY CREATE if false, then is true on creation
+			isHit = false;
 			isSpeedblock = true;
 
 		}
@@ -197,6 +198,7 @@
 		movY2 = 20;
 		console.log(movX1,movX2,mBx1,mBx2,movY1,movY2,mBx2,mBy2);
 		isSpeedblock = true;
+		isHit = false;
 		}
 
 		function moveAll() {
@@ -252,7 +254,7 @@
 				ballSpeedY = 1;
 				player2Score++; //must be BEFORE ballReset()
 				ballReset();
-
+				ballColor = 'white';
 				}
 			}
 			if(ballY < 0)
@@ -267,7 +269,9 @@
 			//We check if the ball is less than the top y value and greater than the bottom y value. I guess this means we draw from the bottom left corner.
 			if ((ballY <= (sBy + blockY)&&ballY >= sBy ) && (ballX <= (sBx + blockX)&&ballX >= sBx ))
 			{
+				ballColor = '#66ffc2';
 				isSpeedblock = false;
+				isHit = true;
 				blockX = 0;
 				blockY = 0;
 				ballSpeedY = ballSpeedY * speedMultiplier;
@@ -277,7 +281,7 @@
 			//collider for shotblock - sends the ball downward to bouce and rehit the collider and then shoot it in a random direction.
 			if ((ballY <= (pBy + stopY)&&ballY >= pBy ) && (ballX <= (pBx + stopX)&&ballX >= pBx ))
 			{
-				if (isHit == true) { isHit = false; ballSpeedY = yRand; ballSpeedX = saver * result; stopX = 0; stopY = 0; color = '#ff6666'; console.log("yRand is" + yRand);}
+				if (isHit == true) { isHit = false; ballSpeedY = yRand; ballSpeedX = saver * result; stopX = 0; stopY = 0; color = '#ff6666'; console.log("yRand is" + yRand); ballColor = '#ff6666';}
 				else {
 					isHit = true
 					isSpeedblock = false;
@@ -286,19 +290,34 @@
 					ballSpeedY = 10;
 					saver = ballSpeedX;
 					ballSpeedX = 0;
-					color = ' #70dbdb'
+					color = '#70dbdb';
+					ballColor = '#70dbdb';
 				     }
 
 			}
 		    //Collider for moveblock - send the ball to the opposite block.
-		    if((ballY <= (mBy1 + movY1)&&ballY >= mBy1) &&(ballX <= (mBx1 + movX1) && ballX >= mBx1)) {
+		    if(((ballY <= (mBy1 + movY1)&&ballY >= mBy1) &&(ballX <= (mBx1 + movX1) && ballX >= mBx1)) && isHit == false) {
+					 ballColor = 'yellow';
+					 isSpeedblock = false;
+					 isHit == true;
 		       ballY = (mBy2);
 		       ballX = (mBx2);
+					 mBx2 = -100;
+					 mBy2 = -100;
+					 mBy1 = -100;
+					 mBx1 = -100;
 		       }
 		    //Collider for moveblock - send the ball to the opposite block.
-		    if((ballY <= (mBy2 + movY2)&&ballY >= mBy2) &&(ballX <= (mBx2 + movX2) && ballX >= mBx2)) {
+		    if(((ballY <= (mBy2 + movY2)&&ballY >= mBy2) &&(ballX <= (mBx2 + movX2) && ballX >= mBx2)) && isHit == false) {
+						ballColor = 'blue';
+						isSpeedblock = false;
+						isHit = true;
 		        ballY = (mBy1 + 10);
 		        ballX = (mBx1);
+						mBx2 = -100;
+ 					 	mBy2 = -100;
+ 					 	mBy1 = -100;
+ 					 	mBx1 = -100;
 		       }
 		}
 
