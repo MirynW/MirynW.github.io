@@ -297,7 +297,7 @@
 			}
 		    //Collider for moveblock - send the ball to the opposite block.
 		    if(((ballY <= (mBy1 + movY1)&&ballY >= mBy1) &&(ballX <= (mBx1 + movX1) && ballX >= mBx1)) && isHit == false) {
-					 ballColor = 'yellow';
+					 ballColor = color1;
 					 isSpeedblock = false;
 					 isHit == true;
 		       ballY = (mBy2);
@@ -309,7 +309,7 @@
 		       }
 		    //Collider for moveblock - send the ball to the opposite block.
 		    if(((ballY <= (mBy2 + movY2)&&ballY >= mBy2) &&(ballX <= (mBx2 + movX2) && ballX >= mBx2)) && isHit == false) {
-						ballColor = 'blue';
+						ballColor = color2;
 						isSpeedblock = false;
 						isHit = true;
 		        ballY = (mBy1 + 10);
