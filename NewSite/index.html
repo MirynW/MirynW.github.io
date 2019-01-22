@@ -7,12 +7,14 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <div class="Message1">
-      <button type="button2" onclick="goBackImage()">Click here to see the previous image</button>
-    </div>
-    <div class="Message">
-      <button type="button" onclick="switchImage()">Click here to see the next image</button>
-      <img id="image" src="images/OceanPhoto.jpeg">
-    </div>
+    <div class="message">
+    <ul>
+      <li><button type="button" onclick="switchImage()">Next</button></li>
+      <li><button type="button" onclick="goBackImage()">Previous</button></li>
+    </ul>
+  </div>
+  <div class="imagesTab">
+    <img id="image" src="images/IpswitchRockPhoto.jpeg" alt="Missing Image">
+  </div>
   </body>
 </html>

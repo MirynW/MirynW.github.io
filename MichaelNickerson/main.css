@@ -28,23 +28,6 @@ background-position: center center;
 background-size: cover;
 }
 
-.rightBar {
-  background-image: url("images/OceanPhoto.jpeg");
-  display: flex;
-  color: #ffffff;
-  height: 800px;
-  text-shadow: 0.25px 0.25px 0.25px #000000;
-}
-
-.leftBar {
-  margin-top: 30px;
-  background-image: url("images/OceanPhoto.jpeg");
-  display: flex;
-  color: #ffffff;
-  height: 800px;
-  text-shadow: 0.25px 0.25px 0.25px #000000;
-}
-
 nav {
   color: white;
   display: inline-block;

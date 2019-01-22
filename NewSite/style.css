@@ -1,4 +1,9 @@
+body {
+  background-color: #1c2733;
+}
+
 button {
+  margin: 5px;
   background-color: #ffffff;
   color: black;
   border: none;
@@ -9,16 +14,13 @@ button {
   font-size: 20px;
   border: 5px solid #4CAF50;
 }
-button2 {
-  background-color: #ffffff;
-  color: black;
-  border: none;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  border: 5px solid #4CAF50;
+
+navBar {
+  list-style-type: none;
+}
+
+ul {
+  list-style-type: none;
 }
 
 Message {
@@ -31,12 +33,10 @@ Message {
   object-fit: scale-down;
 }
 
-Message {
-  position: relative;
-  float: left;
-  width: 50px;
-  height: 50px;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  object-fit: scale-down;
+imagesTab {
+  postion: relative;
+  flex:  wrap;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
 }
