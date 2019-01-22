@@ -1,7 +1,18 @@
-var image = ["images/IpswitchRockPhoto.jpeg","images/OceanPhoto.jpeg","images/TrailerIllustrated.jpeg"];
+var image = [];
+var i;
 var counter = 0;
+var type = ".jpg";
+imageAmount = 11;
+window.onload = function() {
+  for (i = 1; i<=imageAmount; i++) {
+    image[i] = "images/" + i + type;
+  }
+}
 function switchImage() {
-    counter = (counter + 1)%(image.length);
+    counter = (counter + 1)%(imageAmount);
+    if (counter == 0) {
+      counter = 1;
+    }
     document.getElementById("image").src=image[counter];
 }
 
