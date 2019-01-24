@@ -2,41 +2,30 @@ var image = [];
 var i;
 var counter = 0;
 var type = ".jpg";
-var slideTime = 3000;
-var buttonPressActive = false;
-imageAmount = 9;
+var imageAmount = 8;
+var width = 1616/2;
+var height = 1080/2;
 
+
+window.onload = function() {
+  for (i = 0; i<=imageAmount; i++) {
+    image[i] = "images/" + i + type;
+  }
+  document.getElementById("image").style="width: " + width + "px; height: " + height + "px;"
+}
 function switchImage() {
-    buttonPressActive = true;
-    counter = (counter + 1)%(imageAmount);
-    console.log(counter);
+    counter = (counter + 1)%(imageAmount + 1);
     document.getElementById("image").src=image[counter];
+    width = width + 10
+    document.getElementById("image").style="width: " + width + "px; height: " + height + "px;"
 }
 
 function goBackImage(){
-  buttonPressActive = true;
   if (counter == 0) {
-    counter = image.length-1;
+    counter = imageAmount;
   }
   else {
     counter = (counter-1)%(image.length);
   }
-  console.log(counter);
   document.getElementById("image").src=image[counter];
-}
-
-function loopSlide() {
-  while(buttonPressActive == false) {
-    counter = (counter + 1)%(imageAmount);
-    document.getElementById("image").src=image[counter];
-    console.log("Loop Slide was called with " + image[counter]);
-  }
-}
-
-window.onload = function() {
-  for (i = 0; i<=imageAmount-1; i++) {
-    image[i] = "images/" + i + type;
-    console.log("i is " + i);
-  }
-  setInterval(function(){loopSlide()}, slideTime);
 }
