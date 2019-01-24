@@ -55,7 +55,6 @@ background-size: cover;
 background-color: #ffffff;
 }
 .leftBar {
-  background-image: url("../images/TrailerIllustrated.jpeg");
   display: flex;
   color: #ffffff;
   height: 700px;
@@ -67,6 +66,26 @@ background-position: center center;
 -moz-background-size: cover;
 -o-background-size: cover;
 background-size: cover;
+}
+
+button {
+  margin: 5px;
+  background-color: #4a5f68;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  border: 5px solid #2f3c42;
+}
+
+button:hover {
+  background-color: #2f3c42;
+  color: white;
+}
+
+ul {
+  list-style-type: none;
 }
 
 nav {

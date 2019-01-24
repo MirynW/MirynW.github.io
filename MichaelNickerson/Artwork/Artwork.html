@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script src="slideshow.js"></script>
     <link rel="stylesheet" type="text/css" href="Artwork_Style.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
@@ -27,13 +28,10 @@
      </div>
     </div>
     <div class="container">
-      <div class="row1">
+      <div class="row2">
         <div class="col-sm-14">
-          <section class="jumbotron">
-          </section>
-          <div class="Image2">
-          </div>
-          <div class="Image3">
+          <div class="leftBar">
+            <img id="image" src="../images/IpswitchRockPhoto.jpeg" alt="No Available Image" style="width: 2040px; height: 1530px;"
           </div>
         </div>
       </div>
@@ -42,6 +40,10 @@
       <div class="row2">
         <div class="col-sm-14">
           <div class="leftBar">
+            <ul>
+              <li><button type="button" onclick="nextImage()">Next</button></li>
+              <li><button type="button" onclick="previousImage()">Previous</button></li>
+            </ul>
           </div>
         </div>
       </div>
