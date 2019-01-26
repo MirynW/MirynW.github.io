@@ -60,7 +60,6 @@ background-color: #ffffff;
   height: 700px;
   text-shadow: 0.25px 0.25px 0.25px #000000;
   background-repeat: no-repeat;
-  margin-top: 30px;
 background-position: center center;
 -webkit-background-size: cover;
 -moz-background-size: cover;
@@ -69,6 +68,9 @@ background-size: cover;
 }
 
 button {
+  position: relative;
+  left: -64%;
+  bottom: -10%;
   margin: 5px;
   background-color: #4a5f68;
   color: black;
@@ -77,6 +79,7 @@ button {
   text-decoration: none;
   font-size: 20px;
   border: 5px solid #2f3c42;
+
 }
 
 button:hover {
