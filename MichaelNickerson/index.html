@@ -1,34 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <meta name="viewport" content="width-device-width, initial-scale-1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <meta charset="utf-8">
-    <title>MirynW</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <script src="JS/indexScripts.js"></script>
+    <title>Michael Nickerson</title>
+    <link rel="stylesheet" href="Css/main.css">
   </head>
-  <body style="font-family: 'Lato', sans-serif;">
-    <header class="container">
-      <div class="row">
-        <h1 class="col-sm-4">MirynW</h1>
-        <nav class="col-sm-8 text-right">
-          <ul style="list-style-type: none;">
-            <li><a href="Pong/PongGame.html"><b>Pong Game</b></a></li>
-            <li><a href="Artwork/Artwork.html"><b>Artwork and photography</b></a></li>
-            <li><a href="Resume/MNickerson_resume2019.pdf" target="_blank"><b>Resume</b></a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+  <body>
     <div class="container">
-      <div class="row">
-        <div class="col-sm-14">
-          <section class="jumbotron">
-          </section>
+      <div class="container">
+      <header>
+      <div class="headText">
+        <h3>michael nickerson</h3>
+      </div>
+      <nav>
+        <a href="#" class="hide-desktop"><img src="images/Hbar.png" alt="menu toggle" class="menu" id="menu"></a>
+        <ul class="show-desktop hide-mobile" id="nav">
+          <li id="exit" class="exit-btn hide-desktop">
+            <img src="images/ExitLogo.png" alt="exit">
+          </li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="Resume/resume.pdf">Resume</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="https://github.com/MirynW">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
+  </div>
+      <div class="parent">
+        <div class="parallax">
+
         </div>
+        <h2>Design and Frontend development</h2>
+        <p class="subhead">Learning Backend</p>
+      </div>
+    <div class="color-container">
+        <h2 class="InfoHeader">General Information</h2>
+        <div class="list-container">
+        <ul class="list">
+          <li class="LogoList">
+            <a href="Resume/resume.pdf"><img src="images/ResumeLogo.png" alt="Resume Logo"></a>
+            <p>resume</p>
+          </li>
+          <li class="LogoList">
+            <a href="Artwork/artwork.html"><img src="images/MonitorLogo.png" alt="Computer Logo"></a>
+            <p>portfolio</p>
+          </li>
+          <li class="LogoList">
+            <a href="#"><img src="images/PhoneLogo.png" alt="Contact Logo"></a>
+            <p>contact</p>
+          </li>
+        </ul>
       </div>
     </div>
+    <div class="gray-container">
+        <ul class="project-container">
+          <li>
+            <figure>
+              <figcaption>
+                <p><a href="Pong/pong.html">JavaScript Pong Game</a></p>
+              </figcaption>
+              <video autoplay loop muted playsinline src="images/PongGif.mp4"></video>
+              <div class="contain-q">
+              <blockquote>
+                I worked on this project to practice with HTML5's canvas property as well as
+                to practice JavaScript.
+              </blockquote>
+            </div>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <figcaption>
+                <p><a href="#">AutoCorrect Program</a></p>
+              </figcaption>
+              <div class="contain-q">
+              <blockquote>
+                I am currently working on an auto-correct program in java that will be able to read
+                a user's input and return a corrected output. It will do so by reading the input,
+                sectioning out each word and comparing it to a .txt file that will contain an organized
+                list of words. By breaking down the inputs into seperate Strings by word, I can iterate
+                over the sentence, completing corrections as needed. Will link the Github Repo when it is done.
+              </blockquote>
+            </div>
+            </figure>
+          </li>
+        </ul>
+    </div>
+    <script>
+      var menu = document.getElementById('menu');
+      var nav = document.getElementById('nav');
+      var exit = document.getElementById('exit');
+
+      menu.addEventListener('click', function(e) {
+        nav.classList.toggle('hide-mobile');
+        e.preventDefault();
+      });
+
+      exit.addEventListener('click', function(e) {
+        nav.classList.add('hide-mobile');
+        e.preventDefault();
+      });
+      </script>
   </body>
 </html>

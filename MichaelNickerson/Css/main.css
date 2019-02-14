@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css?family=Cairo');
+@import url('https://fonts.googleapis.com/css?family=Major+Mono+Display');
+@import url('https://fonts.googleapis.com/css?family=Archivo+Black');
+
+body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headText {
+  font-size: 3em;
+  font-family: 'Major Mono Display', monospace;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.menu {
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 30%;
+  float: right;
+}
+
+p, blockquote {
+  font-size: .9em;
+  line-height: 1.6em;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  text-align: center;
+  padding:0;
+  margin:0;
+  width: 100%;
+}
+
+h3 {
+  position: relative;
+  font-size: .9em;
+  line-height: 1.6em;
+  text-align: left;
+}
+
+.parent {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.parallax {
+  background: url('../images/FrontPicture.jpeg') no-repeat center;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 700px;
+}
+
+.color-container {
+  background-color: #56beff;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.list-container {
+  display: inline-block;
+}
+
+.gray-container {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.project-container {
+  display: inline-block;
+}
+
+.hide-mobile {
+  display: none;
+}
+
+video {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+nav ul {
+  position: fixed;
+  width: 30%;
+  top: 0;
+  right: 0;
+  text-align: left;
+  background: rgb(36,41,44);
+  height: 100%;
+  z-index: 7;
+  padding-top: 3em;
+}
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 1em 2em;
+  background-color: rgb(49,55,59);
+}
+
+nav ul li a:hover {
+  background-color: #8c8c8c;
+}
+
+.LogoList {
+display: inline-block;
+}
+
+.list {
+  display: inline-block;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.list li {
+  margin: 2em 4em 2em 4em;
+  align-items: center;
+}
+
+.list li p {
+  color: #fff;
+  font-size: 1.5em;
+  font-family: 'Major Mono Display', monospace;
+  padding: 0;
+  margin:0;
+}
+
+.list li a {
+  padding: 0;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height auto;
+}
+
+.InfoHeader {
+  color: #fff;
+  font-size: 2.5em;
+  font-family: 'Archivo Black', sans-serif;
+  border-bottom: solid 1px #fff;
+}
+
+.exit-btn {
+  margin-bottom: 1em;
+  margin-top: -1.3em;
+  text-align: right;
+  padding: 0 1.4em;
+}
+
+.exit-btn img {
+  width: 15px;
+  cursor: pointer;
+}
+
+.container-q {
+  text-align: center;
+}
+
+blockquote {
+  display: inline-block;
+  width: 80%;
+}
+
+figcaption p a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.7em;
+}
+
+figcaption p a:hover {
+  color: grey;
+}
+
+nav a {
+  width: 20%;
+}
+
+.menu {
+  width: 40%;
+}
+
+@media only screen and (min-width: 650px) {
+  h1 {
+    font-size: 1em;
+    margin: 0;
+  }
+
+  .headText {
+    width: 30%;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  nav ul {
+    width: 30%;
+  }
+
+  video {
+    width: 50%;
+  }
+
+}
+
+@media only screen and (min-width: 1024px) {
+  .menu {
+    width: 10%;
+  }
+}
+
+
+
+@media only screen and (min-width: 1060px) {
+
+  .show-desktop {
+    display: block;
+    margin: 0 auto 13%;
+  }
+  .hide-desktop {
+    display: none;
+  }
+
+  .container {
+    width: 80%;
+  }
+
+  nav {
+    text-align: right;
+  }
+
+  nav ul {
+    position: inherit;
+    width: auto;
+    background: none;
+    height: auto;
+    display: flex;
+    padding-top: 0;
+  }
+
+  nav ul li {
+      float: left;
+      display: block;
+      margin-left: 30px;
+      margin-right: 0;
+    }
+
+  nav ul li a {
+      color: #000;
+      background-color: inherit;
+      padding: 1em 2em;
+      font-size: 1.1em;
+    }
+
+  nav ul li  a:hover {
+    background-color: inherit;
+    color: grey;
+  }
+
+  video {
+    width: 30%;
+  }
+
+  blockquote {
+    width: 60%;
+  }
+
+
+}
+
+@media only screen and (min-width: 1600px) {
+  .container {
+    width: 90%;
+  }
+
+  nav {
+    margin-top: 30px;
+  }
+
+  h3 {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 20px;
+  }
+
+  video {
+    width: 25%;
+  }
+
+  blockquote {
+    width: 30%;
+  }
+
+}
+
+/*
+To do's:
+1. Change nav bar at top to be smaller and or overlap on the image
+2. Make a sticky nav-bar that will come down with the rest of the page
+3. Adjust LogoList image size for phone users(slightly smaller)
+
+*/

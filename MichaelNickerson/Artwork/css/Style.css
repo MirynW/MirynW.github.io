@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css?family=Cairo');
+@import url('https://fonts.googleapis.com/css?family=Major+Mono+Display');
+@import url('https://fonts.googleapis.com/css?family=Archivo+Black');
+
+body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  display: inline-block;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headText {
+  font-size: 3em;
+  font-family: 'Major Mono Display', monospace;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.menu {
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 50%;
+  float: right;
+}
+
+.headText:hover {
+  color: grey;
+}
+
+.container {
+  text-align: center;
+  padding:0;
+  margin:0;
+  width: 100%;
+}
+
+  h1 {
+    z-index: 3;
+    font-size: .9em;
+    line-height: 1.6em;
+    text-align: left;
+  }
+
+  .container-2 {
+    padding: .8em 1.2em;
+    width: 100%;
+  }
+
+  .parallax {
+    background: url('../images/OceanPhoto.jpeg') no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1000px;
+    display: flex;
+  }
+
+  .parallax1 {
+    background: url('../images/LightHouse.jpg') no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1000px;
+  }
+
+  .parallax2 {
+    background: url('../images/BoatBack.JPG') no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1000px;
+  }
+
+  .parallax3 {
+    background: url('../images/BoatOcean.JPG') no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 1000px;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+
+  nav ul {
+    position: fixed;
+    width: 30%;
+    top: 0;
+    right: 0;
+    text-align: left;
+    background: rgb(36,41,44);
+    height: 100%;
+    z-index: 7;
+    padding-top: 3em;
+  }
+  nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    padding: 1em 2em;
+    background-color: rgb(49,55,59);
+  }
+
+  nav ul li a:hover {
+    background-color: #8c8c8c;
+  }
+  .exit-btn {
+    margin-bottom: 1em;
+    margin-top: -1.3em;
+    text-align: right;
+    padding: 0 1.4em;
+  }
+
+  .exit-btn img {
+    width: 15px;
+    cursor: pointer;
+  }
+
+  nav a {
+    width: 0%;
+  }
+
+  .menu {
+    width: 30%;
+  }
+
+  @media only screen and (min-width: 650px) {
+    h1 {
+      font-size: 1em;
+      margin: 0;
+    }
+    .menu {
+      width: 50%;
+    }
+    .headText {
+      width: 30%;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    nav ul {
+      width: 30%;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .menu {
+      width: 30%;
+    }
+  }
+
+
+
+  @media only screen and (min-width: 1060px) {
+
+    .show-desktop {
+      display: block;
+      margin: 0 auto 13%;
+    }
+    .hide-desktop {
+      display: none;
+    }
+
+    .container {
+      width: 80%;
+    }
+
+    nav {
+      text-align: right;
+    }
+
+    nav ul {
+      position: inherit;
+      width: auto;
+      background: none;
+      height: auto;
+      display: flex;
+      padding-top: 0;
+    }
+
+    nav ul li {
+        float: left;
+        display: block;
+        margin-left: 30px;
+        margin-right: 0;
+      }
+
+    nav ul li a {
+        color: #000;
+        background-color: inherit;
+        padding: 1em 2em;
+        font-size: 1.1em;
+      }
+
+    nav ul li  a:hover {
+      background-color: inherit;
+      color: grey;
+    }
+  }
+
+  @media only screen and (min-width: 1600px) {
+    .container {
+      width: 90%;
+    }
+
+    h3 {
+      margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-right: 20px;
+    }
+
+    nav {
+      margin-top: 30px;
+    }
+  }
