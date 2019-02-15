@@ -246,7 +246,7 @@ nav a {
   }
 
   .container {
-    width: 80%;
+    width: 100%;
   }
 
   nav {
@@ -294,7 +294,7 @@ nav a {
 
 @media only screen and (min-width: 1600px) {
   .container {
-    width: 90%;
+    width: 100%;
   }
 
   nav {
