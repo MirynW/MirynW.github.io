@@ -1,0 +1,29 @@
+/*imports*/
+* {
+    box-sizing: border-box;
+}
+
+/*General*/
+.columns {
+    text-align: center;
+}
+.box {
+    width: 30%;
+    margin: 10px auto;
+    display: inline-block;
+    padding: 0;
+}
+.box ul {
+    list-style-type: disc;
+    text-align: left;
+}
+
+/*Containers*/
+
+
+/*Media Queries*/
+@media (max-width: 800px) {
+    .top {
+        padding-top: 75px;
+    }
+}

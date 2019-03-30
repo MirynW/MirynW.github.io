@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css?family=Abel|Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*General style(fonts and sizes)*/
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+ul {
+    list-style-type: none;
+}
+/*Header*/
+header > h1 {
+    font-family: Asap, sans-serif;
+    display: inline;
+    font-size: 2.5em;
+    position: relative;
+    color: white;
+}
+nav {
+    top: 0;
+    right: 0;
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    width: 100%;
+    border-bottom-right-radius: 40px;
+    background-color: #17334E;
+    font-family: 'Abel', sans-serif;
+    padding: 20px;
+    height: 110px;
+    font-size: 1.3em;
+    transition: all 0.3s ease-in 0.3s;
+}
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    width: 45%;
+}
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+.nav-links a:hover {
+    text-decoration: underline;
+}
+.small {
+    width: 30%;
+}
+.item-title a:hover {
+    color: grey;
+}
+/*ParallaxEffect*/
+
+.effect {
+    background: url('../Images/Photography/FrontPicture.jpeg') no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    height: 1500px;
+    transition: all 0.4s ease-in 0.2s;
+}
+.space {
+    height: 92vh;
+}
+/*Containers*/
+.container {
+    text-align: center;
+    background-color: white;
+    margin: 0;
+    padding: 10px 0;
+}
+.color {
+    background-color: #4684C3;
+    color: white;
+    /*font-family: 'Abel', sans-serif;*/
+    font-family: Asap, sans-serif;
+    font-size: 1.2em;
+}
+.container .images .image{
+    display: inline-block;
+    padding: 10px;
+}
+.container .images .image:hover {
+    background: rgba(255,255,255,0.2);
+    border-radius: 5%;
+}
+.container img {
+    margin: 50px;
+}
+.hold {
+    font-size: 1.4em;
+    width: 50%;
+    margin: 0 auto 20px;
+}
+.project-container {
+    max-width: 30%;
+    min-width: 375px;
+    margin: 10px auto;
+}
+/*Section Color: #56beff*/
+
+/*at width 776px, we need to change the nav bar into a button*/
+
+/*Videos and stuff*/
+video {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+figure {
+    margin: 10px;
+    padding: 10px;;
+}
+.item-title {
+    font-size: 1.4em;
+}
+.item-title a {
+    text-decoration: none;
+    color: black;
+}
+/*show none*/
+.burger {
+    display: none;
+}
+.burger div {
+    width: 35px;
+    height: 3px;
+    background-color: rgb(226,226,226);
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+.change-nav {
+    background: rgba(23, 29, 36, 0.623);
+    border-bottom-right-radius: 0;
+    transition: all 0.3s ease-in 0.3s;
+    height: 75px;
+    font-size: 1.1em;
+}
+
+/*Media Queries*/
+@media (min-width: 1024) {
+    .nav-links {
+        width: 30%;
+    }
+}
+@media (max-width: 800px) {
+    body {
+        overflow-x: hidden;
+    }
+    nav {
+        border-radius: 0;
+        position: fixed;
+        background: rgba(23, 51, 78, 0.90);
+        transition:  0.5s ease-in;
+        font-size: 1.1
+    }
+    header > h1 {
+        font-family: Asap, sans-serif;
+        display: inline;
+        font-size: 2em;
+        position: relative;
+        color: white;
+    }
+    .burger {
+        display: block;
+        cursor: pointer;
+    }
+    .nav-links {
+        position: fixed;
+        right: 0px;
+        height: 100%;
+        top: 8vh;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        background-color: rgba(23, 51, 78, 0.90);
+        transform: translateX(100%);
+        transition: 0.5s ease-in;
+    }
+    .nav-links li {
+        opacity: 1;
+        width: 100%;
+        height: 24px;
+        text-align: center;
+        padding: 0;
+    }
+    .nav-links li a:hover {
+        background-color: rgba(255,255,255,0.2);
+    }
+    .nav-links li a {
+        font-size: 1.7em;
+        display: block;
+        padding: 1em;
+    }
+    .fill {
+    background: rgba(23, 51, 78, 1);
+    }
+    .change-nav {
+        background: rgba(23, 51, 78, .8);
+        border-bottom-right-radius: 0;
+        transition: all 0.3s ease-in 0.3s;
+        height: 75px;
+    }
+}
+@media (max-width: 375px) {
+    .nav-links {
+        top: 11.2vh;
+    }
+}
+@media (max-width: 320px) {
+    .nav-links {
+        top: 13.2vh;
+    }
+    .project-container {
+        width: 320px;
+    }
+    .container {
+        width: 320px;
+    }
+}
+.nav-active {
+    transform: translateX(0%);
+}
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+.toggle .line2 {
+    opacity: 0;
+}
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+
+
+
