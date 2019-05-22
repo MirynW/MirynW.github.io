@@ -46,7 +46,7 @@ function change() {
         imageElement.style.backgroundPosition = 'center';
     else
         imageElement.style.backgroundPosition = 'bottom';
-    i = (i+1)%(arr.length-1);
+    i = (i+1)%(arr.length);
     //i++;
     //if (i > arr.length-1)
         //i = 0;
