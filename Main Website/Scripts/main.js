@@ -46,9 +46,10 @@ function change() {
         imageElement.style.backgroundPosition = 'center';
     else
         imageElement.style.backgroundPosition = 'bottom';
-    i++;
-    if (i > arr.length-1)
-        i = 0;
+    i = (i+1)%(arr.length-1);
+    //i++;
+    //if (i > arr.length-1)
+        //i = 0;
 }
 
 navSlide();
