@@ -209,14 +209,19 @@ figure {
         height: 75px;
     }
 }
+@media (max-width: 445px) {
+    .nav-links {
+        top: 14vh;
+    }
+}
 @media (max-width: 375px) {
     .nav-links {
-        top: 11.2vh;
+        top: 10.9vh;
     }
 }
 @media (max-width: 320px) {
     .nav-links {
-        top: 13.2vh;
+        top: 14vh;
     }
     .project-container {
         width: 320px;
