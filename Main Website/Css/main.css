@@ -89,9 +89,17 @@ nav {
     height: 240px;
     padding: 10px;
 }
+.images > a {
+    text-decoration: none;
+    color: white;
+}
+p {
+    margin-bottom: 25px;
+}
 #img1 {
     background: url("../Images/UI_elements/ResumeLogo.png") no-repeat;
     width: 184px;
+    margin-bottom: 9px;
 }
 #img2 {
     background: url("../Images/UI_elements/MonitorLogo.png") no-repeat;
@@ -100,6 +108,7 @@ nav {
 #img3 {
     background: url("../Images/UI_elements/PhoneLogo.png") no-repeat;
     width: 134px;
+    margin-bottom: 9px;
 }
 .container .images .image:hover {
     
