@@ -90,15 +90,15 @@ nav {
     padding: 10px;
 }
 #img1 {
-    background: url("../Images/UI_elements/ResumeLogo.png");
+    background: url("../Images/UI_elements/ResumeLogo.png") no-repeat;
     width: auto;
 }
 #img2 {
-    background: url("../Images/UI_elements/MonitorLogo.png");
+    background: url("../Images/UI_elements/MonitorLogo.png") no-repeat;
     width: auto;
 }
 #img3 {
-    background: url("../Images/UI_elements/PhoneLogo.png");
+    background: url("../Images/UI_elements/PhoneLogo.png") no-repeat;
     width: auto;
 }
 .container .images .image:hover {
