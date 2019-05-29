@@ -87,6 +87,7 @@ nav {
 .container .images .image{
     display: inline-block;
     height: 240px;
+    width: 260
     padding: 10px;
 }
 #img1 {
