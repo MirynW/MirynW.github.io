@@ -92,6 +92,8 @@ nav {
 .images > a {
     text-decoration: none;
     color: white;
+    display:  inline-block;
+    margin: 10px;
 }
 p {
     margin-bottom: 25px;
