@@ -91,15 +91,15 @@ nav {
 }
 #img1 {
     background: url("../Images/UI_elements/ResumeLogo.png") no-repeat;
-    width: 184;
+    width: 184px;
 }
 #img2 {
     background: url("../Images/UI_elements/MonitorLogo.png") no-repeat;
-    width: 266;
+    width: 266px;
 }
 #img3 {
     background: url("../Images/UI_elements/PhoneLogo.png") no-repeat;
-    width: 134;
+    width: 134px;
 }
 .container .images .image:hover {
     
