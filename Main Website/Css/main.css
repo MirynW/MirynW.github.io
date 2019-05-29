@@ -16,7 +16,7 @@ ul {
 header > h1 {
     font-family: Asap, sans-serif;
     display: inline;
-    font-size: 2.5em;
+    font-size: 2.4em;
     position: relative;
     color: white;
 }
@@ -49,6 +49,7 @@ nav {
 }
 .nav-links a:hover {
     text-decoration: underline;
+    color: #ccdce0;
 }
 .small {
     width: 30%;
@@ -85,10 +86,23 @@ nav {
 }
 .container .images .image{
     display: inline-block;
+    height: 240px;
     padding: 10px;
 }
+#img1 {
+    background: url("../Images/UI_elements/ResumeLogo.png");
+    width: auto;
+}
+#img2 {
+    background: url("../Images/UI_elements/MonitorLogo.png");
+    width: auto;
+}
+#img3 {
+    background: url("../Images/UI_elements/PhoneLogo.png");
+    width: auto;
+}
 .container .images .image:hover {
-    background: rgba(255,255,255,0.2);
+    
     border-radius: 5%;
 }
 .container img {
@@ -176,13 +190,16 @@ figure {
         position: fixed;
         right: 0px;
         height: 100%;
-        top: 8vh;
+        top: 10vh;
         flex-direction: column;
         align-items: center;
         width: 100%;
         background-color: rgba(23, 51, 78, 0.90);
         transform: translateX(100%);
         transition: 0.5s ease-in;
+    }
+    .change-nav > .nav-links {
+        top: 8vh;
     }
     .nav-links li {
         opacity: 1;
@@ -191,8 +208,8 @@ figure {
         text-align: center;
         padding: 0;
     }
-    .nav-links li a:hover {
-        background-color: rgba(255,255,255,0.2);
+    .nav-links li:hover {
+        font-size: 1em;
     }
     .nav-links li a {
         font-size: 1.7em;
@@ -207,16 +224,29 @@ figure {
         border-bottom-right-radius: 0;
         transition: all 0.3s ease-in 0.3s;
         height: 75px;
+        font-size: 1.1em;
     }
 }
 @media (max-width: 445px) {
+    header {
+        font-size: 0.8em;
+    }
+    .change-nav > .nav-links {
+        top: 8vh;
+    }
     .nav-links {
-        top: 14vh;
+        top: 13vh;
     }
 }
 @media (max-width: 375px) {
+    h1 {
+        font-size: 20px;
+    }
+    .change-nav > .nav-links {
+        top: 9.2vh;
+    }
     .nav-links {
-        top: 10.9vh;
+        top: 13.5vh;
     }
 }
 @media (max-width: 320px) {
@@ -252,7 +282,6 @@ figure {
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
-
 
 
 
