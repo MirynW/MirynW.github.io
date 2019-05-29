@@ -87,20 +87,19 @@ nav {
 .container .images .image{
     display: inline-block;
     height: 240px;
-    width: 260
     padding: 10px;
 }
 #img1 {
     background: url("../Images/UI_elements/ResumeLogo.png") no-repeat;
-    width: auto;
+    width: 184;
 }
 #img2 {
     background: url("../Images/UI_elements/MonitorLogo.png") no-repeat;
-    width: auto;
+    width: 266;
 }
 #img3 {
     background: url("../Images/UI_elements/PhoneLogo.png") no-repeat;
-    width: auto;
+    width: 134;
 }
 .container .images .image:hover {
     
