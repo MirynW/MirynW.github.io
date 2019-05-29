@@ -112,9 +112,9 @@ p {
     width: 134px;
     margin-bottom: 9px;
 }
-.container .images .image:hover {
-    
-    border-radius: 5%;
+.images > a:hover {
+    transform: scale(1.1);
+    transition: all 0.15s ease-out;
 }
 .container img {
     margin: auto;
@@ -293,6 +293,7 @@ figure {
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
+
 
 
 
