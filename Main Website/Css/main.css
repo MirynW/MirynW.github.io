@@ -33,7 +33,7 @@ nav {
     background-color: #17334E;
     font-family: 'Abel', sans-serif;
     padding: 20px;
-    height: 110px;
+    height: 80px;
     font-size: 1.3em;
     transition: all 0.3s ease-in 0.3s;
     z-index: 10;
@@ -248,7 +248,7 @@ figure {
         top: 8vh;
     }
     .nav-links {
-        top: 13vh;
+        top: 11vh;
     }
 }
 @media (max-width: 375px) {
@@ -286,6 +286,16 @@ figure {
         transform: translateX(0px);
     }
 }
+@media (max-height: 830px) {
+    .nav-links {
+        top: 9vh;
+    }
+}
+@media (max-height: 600px) {
+    .nav-links {
+        top: 14vh;
+    }
+}
 .toggle .line1 {
     transform: rotate(-45deg) translate(-5px, 6px);
 }
@@ -295,6 +305,7 @@ figure {
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
+
 
 
 
