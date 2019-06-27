@@ -81,6 +81,7 @@ function addTask(task) {
             //set time out
             setTimeout(() => {
                 date.classList.toggle('warning');
+                title.classList.toggle('warning');
             }, 2000);
         }
         user_tasks.pop();
