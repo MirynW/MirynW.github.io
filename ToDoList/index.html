@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="main.css">
+    <title>To Do List</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Planner</h1>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">About</a></li>
+                <li><a href="/">Services</a></li>
+                <li><a href="/">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="title-container">
+        <h1 class="title">Start your list,</h1>
+    </div>
+    <section class="user-container user-tools">
+        <div class="input">
+                    <legend class="legend" onclick="show()">Add New Box</legend>
+                    <div class="user-input hide">
+                        <label for="title">Title</label>
+                        <input id="form-title" type="text">
+                        <label for="date">Date Due</label>
+                        <input id="small" type="text">
+                        <br>
+                        <div id="details">Details</div>
+                        <textarea name="details" id="form-details"></textarea>
+                        <br>
+                        <button class="submit" onclick="submit()">Submit</button>
+                    </div>
+        </div>
+    </section>
+    <section class="sort-container">
+        <button id="sort" onclick="sort()">Sort by due date</button>
+    </section>
+    <section id="task-list" class="list-container chart-add">
+        <!--Template-->
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
