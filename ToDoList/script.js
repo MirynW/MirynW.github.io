@@ -58,9 +58,6 @@ function addTask(task) {
     if(ctitle && cdate) {
         node.innerHTML = `<article id="task-list" class="box-container"><h3 class="box-title">${task.title}</h3><button class="remove" onclick="remove(${task.identifier})">X</button></br><p>due: ${task.date}</p></hr><div class="text-box"><p>${task.details}</p></div><p class="added-date">added: ${task.date_added}</p></article>`;
         task_list.appendChild(node);
-    } else if(task.date == '/' && ctitle == true) {
-        node.innerHTML = `<article id="task-list" class="box-container"><h3 class="box-title">${task.title}</h3><button class="remove" onclick="remove(${task.identifier})">X</button></br><p>due: ${task.date}</p></hr><div class="text-box"><p>${task.details}</p></div><p class="added-date">added: ${task.date_added}</p></article>`;
-        task_list.appendChild(node);
     } else {
         if(ctitle == false && cdate == true) {
             title.classList.toggle('warning');
@@ -102,9 +99,6 @@ function loadTask(user_tasks) {
         if(ctitle && cdate) {
             let node = document.createElement('DIV'); 
             node.setAttribute('id', `${task.identifier}`);
-            node.innerHTML = `<article id="task-list" class="box-container"><h3 class="box-title">${task.title}</h3><button class="remove" onclick="remove(${task.identifier})">X</button></br><p>due: ${task.date}</p></hr><div class="text-box"><p>${task.details}</p></div><p class="added-date">added: ${task.date_added}</p></article>`;
-            task_list.appendChild(node);
-        } else if(task.date == '/' && ctitle == true) {
             node.innerHTML = `<article id="task-list" class="box-container"><h3 class="box-title">${task.title}</h3><button class="remove" onclick="remove(${task.identifier})">X</button></br><p>due: ${task.date}</p></hr><div class="text-box"><p>${task.details}</p></div><p class="added-date">added: ${task.date_added}</p></article>`;
             task_list.appendChild(node);
         } else {
