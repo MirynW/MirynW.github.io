@@ -186,6 +186,7 @@ button:active {
     font-style: italic;
 }
 .remove {
+    float: right;
     border-radius: 10px;
     color: white;
     background: #fa5776;
@@ -194,7 +195,6 @@ button:active {
     box-shadow: none;
     border: none;
     margin: 10px;
-    margin-left: 60%;
     border-bottom: 3px solid #a80032;
     outline: none;
     display: inline-block;
