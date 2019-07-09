@@ -147,18 +147,45 @@ function fillData() {
     elements.append(product);
 }
 
+let flag = true;
+
 //UserInput
 function onClick( dir ) {
     //Shift each element to the right, in a doubly linked list?
-    if( dir == '<' ) {
-        elements.active = elements.active.prev;
-    } else {
-        elements.active = elements.active.next;
+    if(flag) {
+        if( dir == '<' ) {
+            flag = false;
+            elements.active = elements.active.next;
+            animateNext(true);
+            setTimeout( animateNext, 200);
+            setTimeout( () => { render(dir) }, 200);
+        } else {
+            flag = false;
+            elements.active = elements.active.prev;
+            animatePrev(true);
+            setTimeout( animatePrev, 200);
+            setTimeout( () => { render(dir) }, 200);
+        }
     }
-    render();
+    
+}
+//Handle animations
+function animateNext() {
+    for(let i=0; i<4; i++) {
+        arr[i].classList.toggle("nextAnimation");
+        if(i == 0)
+            arr[i].classList.toggle("fadeL");
+    }
+}
+function animatePrev() {
+    for(let i=0; i<4; i++) {
+        arr[i].classList.toggle("prevAnimation");
+        if(i == 4)
+            arr[i].classList.toggle("fadeB");
+    }
 }
 //Render 4 elements
-function render() {
+function render(dir) {
     let currNode = elements.active;
     let currProduct = currNode.product;
     let imageTag;
@@ -176,11 +203,25 @@ function render() {
             linkTag.setAttribute("href", currProduct.link);
             currNode = currNode.next;
             currProduct = currNode.product;
+            if(dir == '<' && i == 3) {
+                arr[i].classList.toggle("fadeback");
+                setTimeout( () => { arr[i].classList.toggle("fadeback"); }, 200);
+            }
+            if(dir == '>' && i == 0) {
+                arr[i].classList.toggle("fadefor");
+                setTimeout( () => { arr[i].classList.toggle("fadefor"); }, 200);
+            }
         }
     }
+    flag = true;
 }
 
 
 //Function called on init
 fillData();
 render();
+
+//Add a function to pull data rather than having it stored in js
+//Rest api ->JSON file
+//Add IOS support...
+
