@@ -10,15 +10,16 @@
     <style>
         .image-container {
             display: inline-flex;
+            flex-direction: row;
             align-items: center;
             width: 100%;
-            height: 100%;
         }
         .image-holder {
             padding: 0 0.95rem;
             flex-grow: 1;
             justify-content: center;
-            float: left;
+            display: block;
+            width: 200px;
         }
         .container {
             border: 1px solid #dadada;
@@ -31,7 +32,7 @@
         .image {
             margin-bottom: 0.38rem;
             width: 100%;
-            min-width: 200px;
+            
             display: block;
             height: 200px;
             margin: auto;
@@ -39,25 +40,31 @@
         .image:hover {
             opacity: 0.7;
         }
+        .title {
+            font-size: 1em;
+        }
         .text {
             display: block;
         }
         button {
             color: white;
-            background: darkblue;
+            background: linear-gradient(#00008b, #001c8b);
             border: 1px solid #000000;
-            height: 100px;
-            width: 30px;
+            height: 90px;
+            width: 40px;
+            opacity: 0.8;
+            z-index: 10;
+            border-radius: 10px;
         }
         button:active {
-            opacity: 0.8;
+            opacity: 0.5;
+            height: 85px;
+            width: 35px;
         }
-        .title {
-            font-size: 1.2rem;
-
-        }
-        .content {
-
+        .image-holder .container .text .content {
+            border: none !important;
+            font-size: 1em !important;
+            padding: 0 !important;
         }
 
         @media (max-width: 971px) {
@@ -75,10 +82,76 @@
                 display: none;
             }
         }
+        /*Animations*/
+        @keyframes forward {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100%);
+                opacity: 1;
+            }
+        }
+        @keyframes backward {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+        }
+        @keyframes fade {
+            0% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+        @keyframes fadef {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0%);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeb {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0%);
+                opacity: .8;
+            }
+        }
+        .nextAnimation {
+            animation: forward 0.2s forwards linear;
+        }
+        .prevAnimation {
+            animation: backward 0.2s forwards linear;
+        }
+        .fadefor {
+            animation: fadef 0.2s forwards linear;
+        }
+        .fadeback {
+            animation: fadeb 0.2s forwards linear;
+        }
+        .fadeL {
+            animation: fade 0.2s forwards linear;
+        }
+        .fadeB {
+            animation: fade 0.2s backwards linear;
+        }
         </style>
         <!--End Of Style Sheet-->
         <div class="image-container">
-            <button onclick="onClick('<')"><</button>
+            <button onclick="onClick('<')"><i class="fas fa-arrow-left"></i></button>
             <div class="image-holder1 image-holder">
                 <span class="container"><a class="link" href=""><div class="image"></div></a><span class="text"></span></span>
             </div>
@@ -94,8 +167,9 @@
             <div class="image-holder4 image-holder">
                 <span class="container"><a class="link" href=""><div class="image"></div></a><span class="text"></span></span>
             </div>
-            <button onclick="onClick('>')">></button>
+            <button onclick="onClick('>')"><i class="fas fa-arrow-right"></i></button>
         </div>
+        <script src="https://kit.fontawesome.com/151f95e7f3.js"></script>
         <script src="script.js"></script>
 </body>
 </html>
