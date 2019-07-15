@@ -1,21 +1,54 @@
-//cache dom
+// cache dom
 const user_input = document.querySelector('.user-input');
 const task_list = document.querySelector('#task-list');
-//get div-add
+// get div-add
 const title = document.querySelector('#form-title');
 const date = document.querySelector('#small');
 const details = document.querySelector('#form-details');
 
 
-//Globals
+
+// Globals
 let user_tasks = [];
+let url = 'https://fringuante-monsieur-20464.herokuapp.com/posts';
+let other_params = '';
+let jsonObject;
 
 function show() {
     user_input.classList.toggle('show');
     console.log('clicked');
 }
 
-//Function for pulling user 
+// GET request to api
+/*document.addEventListener("DOMContentLoaded", () => {
+    fetch(url, other_params)
+        .then( res => {
+            if(res.ok)
+                return res.json();
+            else {
+                throw new Error('Could Not Reach The API: ' + res.statusText0);
+            }
+        })
+        .then( data => {
+            user_tasks = data;
+        })
+        .catch( err => {
+            console.log(err);
+        });
+});*/
+document.addEventListener("DOMContentLoaded", async () => {
+    jsonObject = await getData();
+    console.log('here');
+    load();
+});
+
+async function getData() {
+    const response = await fetch(url);
+    
+    return response.json();
+}
+
+// Function for pulling user input
 function submit() {
     //Get user date
     let today = new Date();
@@ -45,12 +78,12 @@ function submit() {
     title.value = '';
     details.value = '';
     //Add task and render
-    addTask(task);
+    addTask(task, false);
 }
 
 
 //Add task
-function addTask(task) {
+function addTask(task, isReloading) {
     //let str = task_list.innerHTML;
     let node = document.createElement('DIV'); 
     const ctitle = parseTitle(task.title);
@@ -58,6 +91,8 @@ function addTask(task) {
     if(ctitle && cdate) {
         node.innerHTML = `<article id="task-list" class="box-container"><h3 class="box-title">${task.title}</h3><button class="remove" onclick="remove(${task.identifier})">X</button></br><p>due: ${task.date}</p></hr><div class="text-box"><p>${task.details}</p></div><p class="added-date">added: ${task.date_added}</p></article>`;
         task_list.appendChild(node);
+        if(!isReloading)
+            send(task);
     } else {
         if(ctitle == false && cdate == true) {
             title.classList.toggle('warning');
@@ -87,6 +122,67 @@ function addTask(task) {
         user_tasks.pop();
     }
     console.log(task_list);
+}
+
+// Delete Request
+function deleteRequest(task) {
+    fetch(url + "/" + task._id, {
+        method: 'DELETE'
+      }).then(() => {
+         console.log('removed');
+      }).catch(err => {
+        console.error(err)
+      });
+}
+
+
+// Post request
+function send(task) {
+    const jsonTask = {
+        title: task.title,
+        datedue: task.date,
+        description: task.details,
+        date: task.date_added,
+        intid: task.identifier
+    }
+
+
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(jsonTask), // data can be `string` or {object}!
+        headers:{
+        'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
+}
+
+
+function load() {
+    let obj;
+    for(let i=0; i<jsonObject.length; i++) {
+        obj = jsonObject[i];
+        //create task
+        let id = Math.random() * 100000;
+        while(id == checkIds(user_tasks, id))
+            id = Math.random() * 100000;
+
+        let task = new Object();
+        task.identifier = id;
+        task.date = obj.datedue;
+        task.title = obj.title;
+        task.details = obj.description;
+        task.date_added = obj.date;
+        task._id = obj._id;
+        task.year = parseInt((obj.date.substring(obj.date.length-2, obj.date.length)), 10);
+        task.month = parseInt((obj.date.substring(0,2)), 10);
+        task.day = parseInt((obj.date.substring(3,5)), 10);
+        user_tasks.push(task);  
+        addTask(task, true);
+    }
+
+    
 }
 
 
@@ -192,6 +288,7 @@ function remove(unique_id) {
             index = user_tasks.indexOf(task);
         }
     });
+    deleteRequest(user_tasks[index]);
     user_tasks.splice(index,1);
     console.log(user_tasks.length);
     removeChildElements();
