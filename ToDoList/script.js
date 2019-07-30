@@ -38,7 +38,7 @@ function show() {
 });*/
 document.addEventListener("DOMContentLoaded", async () => {
     jsonObject = await getData();
-    console.log('here');
+    console.log(jsonObject);
     load();
 });
 
@@ -121,7 +121,6 @@ function addTask(task, isReloading) {
         }
         user_tasks.pop();
     }
-    console.log(task_list);
 }
 
 // Delete Request
@@ -173,11 +172,12 @@ function load() {
         task.date = obj.datedue;
         task.title = obj.title;
         task.details = obj.description;
-        task.date_added = obj.date;
+        task.date_added = obj.date.substring(0, 10);
         task._id = obj._id;
-        task.year = parseInt((obj.date.substring(obj.date.length-2, obj.date.length)), 10);
-        task.month = parseInt((obj.date.substring(0,2)), 10);
-        task.day = parseInt((obj.date.substring(3,5)), 10);
+        task.year = parseInt((obj.datedue.substring(obj.datedue.length-2, obj.datedue.length)), 10);
+        task.month = parseInt((obj.datedue.substring(0,2)), 10);
+        task.day = parseInt((obj.datedue.substring(3,5)), 10);
+        console.log(task.month + "/" + task.day + "/" + task.year);
         user_tasks.push(task);  
         addTask(task, true);
     }
@@ -302,3 +302,4 @@ function remove(unique_id) {
 //using the github api flow to check for pull and push requests
 
 //Function for placing data into new component
+
