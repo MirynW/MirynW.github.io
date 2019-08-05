@@ -153,7 +153,10 @@ function send(task) {
         'Content-Type': 'application/json'
         }
     }).then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
+    .then(response => {
+        console.log('Success:', JSON.stringify(response));
+        task._id = response._id;
+    })
     .catch(error => console.error('Error:', error));
 }
 
