@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width-device-width, initial-scale-1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <meta charset="utf-8">
+    <title>Michael Nickerson</title>
+    <link rel="stylesheet" href="PongStyle.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="container">
+      <header>
+      <div class="headText">
+        <h3>michael nickerson</h3>
+      </div>
+      <nav>
+        <a href="#" class="hide-desktop"><img src="../images/Hbar.png" alt="menu toggle" class="menu" id="menu"></a>
+        <ul class="show-desktop hide-mobile" id="nav">
+          <li id="exit" class="exit-btn hide-desktop">
+            <img src="../images/ExitLogo.png" alt="exit">
+          </li>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../Resume/resume.pdf">Resume</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="https://github.com/MirynW">Github</a></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
+  </div>
+    <div class="gray-container">
+        <ul class="project-container">
+	<div class="game">
+	<canvas id = "gameCanvas" width = "800"
+	height = "600"></canvas>
+	</div>
+	<body>
+		<script>
+		//Miryn
+		var canvas;
+		var canvasContext;
+		var Fps = 144;
+		//added higher fps
+		var ballX = 50;
+		var ballY = 50;
+		var ballSpeedX = 5;
+		var ballSpeedY = 1;
+		var speedMultiplier = 1.5;
+		var randoms;
+		var saver = 0;
+		var ballColor = 'white'
+		var isSpeedblock = false;
+		var blockX = 0;
+		var blockY = 0;
+		var sBx = -100;
+		var sBy = -100;
+		var isStopblock = false;
+		var stopX = 0;
+		var stopY = 0;
+		var pBx = -100;
+		var pBy = -100;
+		var result = 1;
+		var isHit = false;
+		var color = '#db7070'
+		var yRand = 0;
+		var paddleY = 0;
+		const PADDLE_HEIGHT = 100;
+		const Thicc = 10;
+		var paddle2Y = 250;
+		var player1Score = 0;
+		var player2Score = 0;
+		const WINNING_SCORE = 7;
+		var WhoWin = 0;
+		var WinPause = false;
+		var isMoveblock = false;
+		var movX1 = 0;
+		var movY1 = 0;
+		var mBx1 = -100;
+		var mBy1 = -100;
+		var movX2 = 0;
+		var movY2 = 0;
+		var mBx2 = -100;
+		var mBy2 = -100;
+		var color1 = '#ffd968';
+		var color2 = '#91bbff';
+		function calculateMousePos(evt) {
+			var rect = canvas.getBoundingClientRect();
+			var root = document.documentElement;
+			var mouseX = evt.clientX - rect.left - root.scrollLeft;
+			var mouseY = evt.clientY - rect.top - root.scrollTop;
+			return {
+				x:mouseX,
+				y:mouseY
+				};
+		}
+		function handleMouseClick(evt) {
+			if(WinPause) {
+				player1Score = 0;
+				player2Score = 0;
+				WinPause = false;
+			}
+		}
+		window.onload = function()
+		{
+			canvas = document.getElementById('gameCanvas');
+			canvasContext = canvas.getContext('2d');
+			setInterval(function(){moveAll(); drawAll();}, 1000/Fps);
+			canvas.addEventListener('mousedown',handleMouseClick)
+			canvas.addEventListener('mousemove',
+				function(evt) {
+					var mousePos = calculateMousePos(evt);
+					paddleY = mousePos.y-(PADDLE_HEIGHT/2);
+				});
+		}
+		function ballReset() {
+      ballColor = 'white';
+			if(player1Score >= WINNING_SCORE) { WhoWin = 1; }
+			if(player2Score >= WINNING_SCORE) { WhoWin = 2; }
+			if(player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE){
+				player1Score = 0;
+				player2Score = 0;
+				WinPause = true
+			}
+			ballSpeedX = -ballSpeedX;
+			ballSpeedY = 1;
+			ballX = canvas.width/2;
+			ballY = canvas.height/2;
+		}
+		function computerMovement(){
+			var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2);
+			if(paddle2YCenter < ballY-35) {
+				paddle2Y += 3.3;
+			}
+			else if(paddle2YCenter > ballY + 35){
+				paddle2Y -= 3.3;
+			}
+		}
+		function genSpeedBox() {
+			blockX = 30;
+			blockY = 70;
+			//sBy = Math.random() * (100 - (canvas.height-100));
+			sBy = Math.floor(Math.random() * ((canvas.height - 100) - 100 + 1)) + 100;
+			console.log(sBy);
+			//sBx = Math.random() * (200 - (canvas.width-200));
+			sBx = Math.floor(Math.random() * ((canvas.width - 300) - 300 + 1)) + 300;
+			console.log(sBx);
+			//ONLY CREATE if false, then is true on creation
+			isSpeedblock = true;
+		}
+		function genShotBox() {
+			//This will generate a number 0-9
+			yRand = Math.floor(Math.random() * 10);
+			if (yRand >= 1 && yRand <=5) { yRand = yRand * -1; }
+			if (yRand >=6 && yRand <=9) { yRand = yRand - 5; }
+			result = Math.floor(Math.random() * 2);
+			if (result == 0) { result = -1; }
+			else { result = 1; }
+		 	stopX = 20;
+			stopY = 90;
+			//sBy = Math.random() * (100 - (canvas.height-100));
+			pBy = Math.floor(Math.random() * ((canvas.height - 100) - 100 + 1)) + 100;
+			console.log("shotBox" + pBy);
+			pBx = 400-stopX
+			//ONLY CREATE if false, then is true on creation
+			isHit = false;
+			isSpeedblock = true;
+		}
+		function genMoveBox() {
+		    //Generate boxes at the top and bottom of the screen that moves the ball to the opposite box when hit
+		/*
+		var movX1 = 0;
+		var movY1 = 0;
+		var mBx1 = -100;
+		var mBy1 = -100;
+		var movX2 = 0;
+		var movY2 = 0;
+		var mBx2 = -100;
+		var mBy2 = -100;
+		var color1 = 'orange';
+		var color2 = 'blue';
+		    colorRect(mBx1,mBy1,movX1,movY1, color1);
+		    //draws move block out
+		    colorRect(mBx2,mBy2,movX2,movY2, color2);
+		*/
+		//On creation, set sizes and range
+		mBx1 = Math.floor(Math.random() *canvas.width);
+		mBy1 = (canvas.height-20);
+		movX1 = 100;
+		movY1 = 20;
+		mBx2 = Math.floor(Math.random() *canvas.width);
+		mBy2 = 0;
+		movX2 = 100;
+		movY2 = 20;
+		console.log(movX1,movX2,mBx1,mBx2,movY1,movY2,mBx2,mBy2);
+		isSpeedblock = true;
+		isHit = false;
+		}
+		function moveAll() {
+			if(WinPause) {
+				ballSpeedX = 5;
+				ballSpeedY = 1;
+				return;
+			}
+			computerMovement();
+		    //genMoveBox();
+			ballX += ballSpeedX;
+			ballY += ballSpeedY;
+			if(ballX > canvas.width)
+			{
+			if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT){
+        if(ballColor != '#66ffc2'){
+          ballColor = 'white';
+        }
+				ballSpeedX = -ballSpeedX;
+					var deltaY = ballY
+						-(paddle2Y+PADDLE_HEIGHT/2);
+					ballSpeedY = deltaY * 0.1;
+					randoms = Math.floor(Math.random() * 3);
+					console.log(randoms);
+			if (isSpeedblock == false && randoms == 0) { genSpeedBox(); }
+			if (isSpeedblock == false && randoms == 1) { genShotBox();  }
+		    if (isSpeedblock == false && randoms == 2) { genMoveBox();  }
+				}
+			else{
+        player1Score++;
+        ballReset();
+        ballSpeedX = 5;
+        ballSpeedY = 1;
+        ballColor = 'white';
+			}
+			}
+			if(ballX < 0)
+			{
+				if(ballY > paddleY && ballY < paddleY+PADDLE_HEIGHT){
+          if(ballColor != '#66ffc2'){
+            ballColor = 'white';
+          }
+					ballSpeedX = -ballSpeedX;
+					var deltaY = ballY
+						-(paddleY+PADDLE_HEIGHT/2);
+					ballSpeedY = deltaY * 0.1;
+					randoms = Math.floor(Math.random() * 2);
+					console.log(randoms);
+			if (isSpeedblock == false && randoms == 0) { genSpeedBox(); }
+			if (isSpeedblock == false && randoms == 1) { genShotBox(); }
+		    if (isSpeedblock == false && randoms == 2) { genMoveBox();  }
+				}
+				else{
+				ballSpeedX = 5;
+				ballSpeedY = 1;
+				player2Score++; //must be BEFORE ballReset()
+				ballReset();
+				ballColor = 'white';
+				}
+			}
+			if(ballY < 0)
+			{
+				ballSpeedY = -ballSpeedY;
+			}
+			if(ballY > canvas.height)
+			{
+				ballSpeedY = -ballSpeedY;
+			}
+			//collider for speedBall
+			//We check if the ball is less than the top y value and greater than the bottom y value. I guess this means we draw from the bottom left corner.
+			if ((ballY <= (sBy + blockY)&&ballY >= sBy ) && (ballX <= (sBx + blockX)&&ballX >= sBx ))
+			{
+        if(ballColor == '66ffc2'){
+          ballColor = '#00ff99';
+        }
+        else if(ballColor == '#00ff99'){
+          ballColor = '#00b36b';
+        }
+        else {
+          ballColor = '#66ffc2';
+        }
+				isSpeedblock = false;
+				isHit = true;
+				blockX = 0;
+				blockY = 0;
+				ballSpeedY = ballSpeedY * speedMultiplier;
+				ballSpeedX = ballSpeedX * speedMultiplier;
+			}
+			//collider for shotblock - sends the ball downward to bouce and rehit the collider and then shoot it in a random direction.
+			if ((ballY <= (pBy + stopY)&&ballY >= pBy ) && (ballX <= (pBx + stopX)&&ballX >= pBx ))
+			{
+				if (isHit == true) { isHit = false; ballSpeedY = yRand; ballSpeedX = saver * result; stopX = 0; stopY = 0; color = '#ff6666'; console.log("yRand is" + yRand); ballColor = '#ff6666';}
+				else {
+					isHit = true
+					isSpeedblock = false;
+					stopX = 50;
+					stopY = 20;
+					ballSpeedY = 10;
+					saver = ballSpeedX;
+					ballSpeedX = 0;
+					color = '#70dbdb';
+					ballColor = '#70dbdb';
+				     }
+			}
+		    //Collider for moveblock - send the ball to the opposite block.
+		    if(((ballY <= (mBy1 + movY1)&&ballY >= mBy1) &&(ballX <= (mBx1 + movX1) && ballX >= mBx1)) && isHit == false) {
+					 ballColor = color1;
+					 isSpeedblock = false;
+					 isHit == true;
+		       ballY = (mBy2);
+		       ballX = (mBx2);
+					 mBx2 = -100;
+					 mBy2 = -100;
+					 mBy1 = -100;
+					 mBx1 = -100;
+		       }
+		    //Collider for moveblock - send the ball to the opposite block.
+		    if(((ballY <= (mBy2 + movY2)&&ballY >= mBy2) &&(ballX <= (mBx2 + movX2) && ballX >= mBx2)) && isHit == false) {
+						ballColor = color2;
+						isSpeedblock = false;
+						isHit = true;
+		        ballY = (mBy1 + 10);
+		        ballX = (mBx1);
+						mBx2 = -100;
+ 					 	mBy2 = -100;
+ 					 	mBy1 = -100;
+ 					 	mBx1 = -100;
+		       }
+		}
+		function drawNet() {
+			for(var i =0;i<canvas.height; i+=40) {
+				colorRect(canvas.width/2-1,i,2,20,'white');
+			}
+		}
+		function drawAll()
+		{
+			//draws canvas
+			colorRect(0,0,canvas.width,canvas.height,'#ff6666');
+			if(WinPause) {
+				canvasContext.fillStyle = 'white';
+				canvasContext.fillText("Click To Continue",350,270);
+				canvasContext.fillStyle = 'white';
+				canvasContext.fillText("Player " + WhoWin + " Wins!",350,250);
+				return;
+			}
+			//draws canvas
+			colorRect(0,0,canvas.width,canvas.height,'#4d4d4d');
+			//draws speed block
+			colorRect(sBx,sBy,blockX,blockY,'#66ffc2');
+			//draws shot box
+			colorRect(pBx,pBy,stopX,stopY, color);
+		    //draws move block in
+		    colorRect(mBx1,mBy1,movX1,movY1, color1);
+		    //draws move block out
+		    colorRect(mBx2,mBy2,movX2,movY2, color2);
+			//draws paddle
+			colorRect(0,paddleY,10,PADDLE_HEIGHT,'white');
+			//draws ball
+			colorCircle(ballX,ballY,10,ballColor);
+			//draws net
+			drawNet();
+			//draws paddle2
+			colorRect(canvas.width-Thicc,paddle2Y,Thicc,PADDLE_HEIGHT,'white');
+			//draws Score1
+			canvasContext.fillText(player1Score,100,100);
+			//draws Score2
+			canvasContext.fillText(player2Score,canvas.width - 100,100);
+		}
+		function colorCircle(centerX,centerY,radius,drawColor)
+		{
+			canvasContext.fillStyle = drawColor
+			canvasContext.beginPath();
+			canvasContext.arc(centerX,centerY,radius,0,Math.PI*2, true);
+			canvasContext.fill();
+		}
+		function colorRect(leftX, topY, width, height, drawColor) {
+		    canvasContext.fillStyle = drawColor;
+		    canvasContext.fillRect(leftX, topY, width, height);
+		}
+		</script>
+	</body>
+</html>
+    </div>
+    <script>
+      var menu = document.getElementById('menu');
+      var nav = document.getElementById('nav');
+      var exit = document.getElementById('exit');
+
+      menu.addEventListener('click', function(e) {
+        nav.classList.toggle('hide-mobile');
+        e.preventDefault();
+      });
+
+      exit.addEventListener('click', function(e) {
+        nav.classList.add('hide-mobile');
+        e.preventDefault();
+      });
+      </script>
+  </body>
+</html>
