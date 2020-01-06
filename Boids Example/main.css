@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+
+#canvas_boids {
+    margin: 10px 10px;
+    outline: #336699 3px solid;
+}
