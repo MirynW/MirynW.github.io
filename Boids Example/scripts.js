@@ -38,6 +38,13 @@ class Vector2d {
         this.x = this.x * newMagnitude / currentMagnitude;
         this.y = this.y * newMagnitude / currentMagnitude;
     }
+    // Polar Functions
+    getMagnitude() {
+        return Math.sqrt(this.x*this.x + this.y * this.y);
+    }
+    getAngle(origin) {
+        return Math.atan((this.y - origin.y)/(this.x - origin.x)) * (180/Math.PI);
+    }
 }
 
 class Boid {
@@ -47,6 +54,7 @@ class Boid {
         this.velocity = velocity;         // floating point
         this.acceleration = acceleration;   // Vector2d
         this.visionRadius = visionRadius;
+        this.turnRadius = 30;
         this.maxForce = maxForce;
         this.maxSpeed = 4;
     }
@@ -58,7 +66,7 @@ class Boid {
         let numNeighbors = 0;
         boidArray.forEach(Boid => {
             if(this.position.distance(Boid.position) < this.visionRadius)
-                if(Boid != this) {
+                if(Boid != this && this.isInView(Boid.position)) {
                     average.summation(Boid.velocity);
                     numNeighbors++;
                 }
@@ -82,7 +90,7 @@ class Boid {
         let numNeighbors = 0;
         boidArray.forEach(Boid => {
             if(this.position.distance(Boid.position) < this.visionRadius)
-                if(Boid != this) {
+                if(Boid != this && this.isInView(Boid.position)) {
                     average.summation(Boid.position);
                     numNeighbors++;
                 }
@@ -108,7 +116,7 @@ class Boid {
         let numNeighbors = 0;
         boidArray.forEach(Boid => {
             if(this.position.distance(Boid.position) < this.visionRadius)
-                if(Boid != this) {
+                if(Boid != this && this.isInView(Boid.position)) {
                     let dist = this.position.distance(Boid.position);
                     let difference = new Vector2d(1,1);
                     difference.multiplication(this.position);
@@ -133,11 +141,78 @@ class Boid {
         return average;
     }
 
+    obstacleAvoidance() {
+        let average = new Vector2d(0,0);
+        let numNeighbors = 0;
+        obstacleArray.forEach(Sphere => {
+            let angle = this.position.getAngle(Sphere.position);
+            let spherePoint = Sphere.rayCollision(angle);
+            
+
+            if(this.position.distance(spherePoint) < this.visionRadius)
+                if(Boid != this && this.isInView(spherePoint)) {
+                    let dist = this.position.distance(spherePoint);
+                    let difference = new Vector2d(1,1);
+                    difference.multiplication(this.position);
+                    difference.subtraction(spherePoint);
+                    // magnitude is inversely proportional to the distance between boids
+                    difference.divide(new Vector2d(dist*dist,dist*dist));
+                    average.summation(difference);
+                    numNeighbors++;
+                }
+        });
+        // take average
+        if(numNeighbors > 0) {
+            average.divide(new Vector2d(numNeighbors, numNeighbors));
+            // Steering formula
+            /*desired_velocity - current_velocity*/ 
+            average.setMagnitude(this.maxSpeed);
+            average.subtraction(this.velocity);
+            average.limit(new Vector2d(this.maxForce, this.maxForce));
+        }
+            
+    
+        return average;
+    }
+
+    target() {
+        let average = new Vector2d(0,0);
+        let numNeighbors = 0;
+        targetArray.forEach(Sphere => {
+            if(this.position.distance(Sphere.position) < this.visionRadius*10)
+                if(Boid != this && this.isInView(Sphere.position)) {
+                    average.summation(Sphere.position);
+                    numNeighbors++;
+                }
+        });
+        // take average
+        if(numNeighbors > 0) {
+            average.divide(new Vector2d(numNeighbors, numNeighbors));
+            // Steering formula
+            /*desired_velocity - current_velocity*/ 
+            average.subtraction(this.position);
+            average.setMagnitude(this.maxSpeed);
+            average.subtraction(this.velocity);
+            average.limit(new Vector2d(this.maxForce, this.maxForce));
+        }
+            
+    
+        return average;
+    }
+
+    isInView(other) {
+        let theta1 = this.position.getAngle(this.velocity);
+        let theta2 = this.position.getAngle(other);
+        if(theta2 < theta1 + this.turnRadius && theta2 > theta1 - this.turnRadius)
+            return true;
+        return false;
+    }
+
 
 
     // Can change later but in general draws a boid to the canvas
     drawBoid() {
-        canvasContext.fillStyle = '#000000';
+        canvasContext.fillStyle = this.color;
 		canvasContext.beginPath();
 		canvasContext.arc(this.position.x, this.position.y, 4, 0, Math.PI*2, true);
         canvasContext.fill();
@@ -151,10 +226,14 @@ class Boid {
         let steeringAlignment = this.alignment();
         let steeringCohesion = this.cohesion();
         let steeringSeparation = this.separation();
+        let obAvoid = this.obstacleAvoidance();
+        let targetVelocity = this.target();
 
         this.acceleration.summation(steeringAlignment);
         this.acceleration.summation(steeringCohesion);
         this.acceleration.summation(steeringSeparation);
+        this.acceleration.summation(obAvoid);
+        this.acceleration.summation(targetVelocity);
     }
 
     boidUpdate() {
@@ -175,19 +254,45 @@ class Boid {
 
 }
 
-class Obstacle {
-    constructor(position, size, shape) {
+class Sphere {
+    constructor(position, radius, color) {
         this.position = position;
+        this.radius = radius;
+        this.color = color;
     }
+    
+
+    // Spherical collision is fairly straightforward
+    rayCollision(angle) {
+        angle *= (Math.PI/180);
+        let col = new Vector2d(this.radius * Math.cos(angle) + this.position.x, this.radius * Math.cos(angle) + this.position.y);
+        return col;
+    }
+
+
+    drawSphere() {
+        canvasContext.fillStyle = this.color;
+		canvasContext.beginPath();
+		canvasContext.arc(this.position.x, this.position.y, this.radius, 0, Math.PI*2, true);
+        canvasContext.fill();
+    }
+
 }
 
 
 window.onload = function() {
 	canvas = document.getElementById('canvas_boids');
     canvasContext = canvas.getContext('2d');
+    //loadExtras();
     for(i=0; i<100; i++) {
         loadInformation();
     }
+    canvas.addEventListener('mousedown',handleMouseClick)
+			canvas.addEventListener('mousemove',
+				function(evt) {
+					currentMousePosition = calculateMousePos(evt);
+					
+				});
 	setInterval(function(){check(); update();}, 1000/Fps);
 }
 
@@ -203,7 +308,53 @@ var LBound;
 var RBound;
 // Array that contains our flock
 var boidArray = [];
+var obstacleArray = [];
+var targetArray = [];
+var selectedObstacle = false;
+var selectedTarget = false;
+var currentMousePosition = 0;
 
+function selectObstacle() {
+    selectedObstacle = true;
+    selectedTarget = false;
+}
+
+function selectTarget() {
+    selectedObstacle = false;
+    selectedTarget = true;
+}
+
+function handleMouseClick() {
+    if(selectedTarget) {
+        targetArray.push(new Sphere(currentMousePosition, 10, "Red"));
+    } else {
+        obstacleArray.push(new Sphere(currentMousePosition, 10, "Black"));
+    }
+}
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY = evt.clientY - rect.top - root.scrollTop;
+    return {
+        x:mouseX,
+        y:mouseY
+        };
+}
+
+function generateObstacle(color) {
+    XBound = new Vector2d(0, canvas.width);
+    YBound = new Vector2d(0, canvas.height);
+    let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
+    obstacle = new Sphere(position, 10, color);
+    return obstacle;
+}
+
+function loadExtras() {
+    obstacleArray.push(generateObstacle("Black"));
+    targetArray.push(generateObstacle("Red"));
+}
 
 function loadInformation() {
     LBound = new Vector2d(0, canvas.width);
@@ -236,6 +387,14 @@ function drawObjects() {
     boidArray.forEach(Boid => {
         Boid.drawBoid();
     });
+
+    obstacleArray.forEach(Sphere => {
+        Sphere.drawSphere();
+    })
+
+    targetArray.forEach(Sphere => {
+        Sphere.drawSphere();
+    })
 }
 
 // Ways to draw objects
