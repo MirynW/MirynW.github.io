@@ -29,7 +29,7 @@ class Vector2d {
 
 
         if(this.x * signX > dVector.x)
-            this.x = dVector.x * signY;
+            this.x = dVector.x * signX;
         if(this.y * signY > dVector.y)
             this.y = dVector.y * signY;
     }
@@ -54,9 +54,10 @@ class Boid {
         this.velocity = velocity;         // floating point
         this.acceleration = acceleration;   // Vector2d
         this.visionRadius = visionRadius;
-        this.turnRadius = 30;
-        this.maxForce = maxForce;
+        this.turnRadius = 90;
+        this.maxForce = 1;
         this.maxSpeed = 4;
+        this.lastVisitedTarget = null;
     }
 
 
@@ -179,10 +180,14 @@ class Boid {
         let average = new Vector2d(0,0);
         let numNeighbors = 0;
         targetArray.forEach(Sphere => {
-            if(this.position.distance(Sphere.position) < this.visionRadius*10)
-                if(Boid != this && this.isInView(Sphere.position)) {
+            if(this.position.distance(Sphere.position) < this.visionRadius)
+                if(this.isInView(Sphere.position) && Sphere != this.lastVisitedTarget) {
                     average.summation(Sphere.position);
                     numNeighbors++;
+                    // Don't use the most recently visited sphere
+                    if(this.position.distance(Sphere.position) <= Sphere.radius) {
+                        this.lastVisitedTarget = Sphere;
+                    }
                 }
         });
         // take average
@@ -279,6 +284,58 @@ class Sphere {
 
 }
 
+class Square {
+    constructor(position, radius, color) {
+        this.position = position;
+        this.radius = radius;
+        this.color = color;
+    }
+    
+
+    // Spherical collision is fairly straightforward
+    rayCollision(angle) {
+        angle *= (Math.PI/180);
+        // Figure out where the ray at the given angle is colliding with the wall of the cube
+        // Determine what point the angle is relative to
+        /* concept
+            angle relative to square.position:      // Seems really unnecessary solving 1of4 linear equations per side
+                -45 <= angle <= 45:     // x1 * what_magnitude = x2?
+                    magnitude = x1/p.x
+                135 < angle < 225:
+                    magnitude = x2/p.x
+                45 < angle < 135: 
+                    magnitude = y1/p.y
+                225 < angle < 315: 
+                    magnitude = y2/p.y
+        */
+       let magnitude;
+       let cubicPoint;
+        if(315 > angle || (angle >= 0 && angle < 45)) {
+            magnitude = (this.position.x + this.radius)/Math.cos(angle);
+        }
+        else if(checkBounds(45, angle, 135)) {
+            magnitude = (this.position.y + this.radius)/Math.sin(angle);
+        }
+        else if(checkBounds(135, angle, 225)) {
+            magnitude = (this.position.x - this.radius)/Math.cos(angle);
+        }
+        else if(checkBounds(225, angle, 315)) {
+            magnitude = (this.position.y - this.radius)/Math.sin(angle);
+        }
+        else
+            magnitude = 1;
+        cubicPoint = new Vector2d(magnitude * Math.cos(angle), magnitude * Math.cos(angle));
+        return cubicPoint;
+    }
+
+
+    drawSphere() {
+        canvasContext.fillStyle = this.color;
+        canvasContext.drawRect(this.position.x, this.position.y, this.radius, this.radius, this.color);
+    }
+
+}
+
 
 window.onload = function() {
 	canvas = document.getElementById('canvas_boids');
@@ -328,7 +385,7 @@ function handleMouseClick() {
     if(selectedTarget) {
         targetArray.push(new Sphere(currentMousePosition, 10, "Red"));
     } else {
-        obstacleArray.push(new Sphere(currentMousePosition, 10, "Black"));
+        obstacleArray.push(new Square(currentMousePosition, 10, "Black"));
     }
 }
 
@@ -417,4 +474,10 @@ function createRandomVector2d(LX,LY,RX,RY) {
     let x = ( Math.random() * (RX - LX + 1) ) + LX;
     let y = ( Math.random() * (RY - LY + 1) ) + LY;
     return new Vector2d(x,y);
+}
+
+function checkBounds(a,b,c) {
+    if(a < b && b < c)
+        return true;
+    return false;
 }
