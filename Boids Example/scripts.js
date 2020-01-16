@@ -145,17 +145,17 @@ class Boid {
     obstacleAvoidance() {
         let average = new Vector2d(0,0);
         let numNeighbors = 0;
-        obstacleArray.forEach(Sphere => {
-            let angle = this.position.getAngle(Sphere.position);
-            let spherePoint = Sphere.rayCollision(angle);
+        obstacleArray.forEach(Square => {
+            let angle = this.position.getAngle(Square.position);
+            let squarePoint = Square.rayCollision(angle);
             
 
-            if(this.position.distance(spherePoint) < this.visionRadius)
-                if(Boid != this && this.isInView(spherePoint)) {
-                    let dist = this.position.distance(spherePoint);
+            if(this.position.distance(squarePoint) < this.visionRadius)
+                if(Boid != this && this.isInView(squarePoint)) {
+                    let dist = this.position.distance(squarePoint);
                     let difference = new Vector2d(1,1);
                     difference.multiplication(this.position);
-                    difference.subtraction(spherePoint);
+                    difference.subtraction(squarePoint);
                     // magnitude is inversely proportional to the distance between boids
                     difference.divide(new Vector2d(dist*dist,dist*dist));
                     average.summation(difference);
@@ -294,7 +294,7 @@ class Square {
 
     // Spherical collision is fairly straightforward
     rayCollision(angle) {
-        angle *= (Math.PI/180);
+        //angle *= (Math.PI/180);
         // Figure out where the ray at the given angle is colliding with the wall of the cube
         // Determine what point the angle is relative to
         /* concept
@@ -308,30 +308,35 @@ class Square {
                 225 < angle < 315: 
                     magnitude = y2/p.y
         */
-       let magnitude;
+       /*let magnitude;
        let cubicPoint;
         if(315 > angle || (angle >= 0 && angle < 45)) {
-            magnitude = (this.position.x + this.radius)/Math.cos(angle);
+            magnitude = (this.position.x + 2*this.radius)/Math.cos(angle);
         }
         else if(checkBounds(45, angle, 135)) {
-            magnitude = (this.position.y + this.radius)/Math.sin(angle);
+            magnitude = (this.position.y)/Math.sin(angle);
         }
         else if(checkBounds(135, angle, 225)) {
-            magnitude = (this.position.x - this.radius)/Math.cos(angle);
+            magnitude = (this.position.x)/Math.cos(angle);
         }
         else if(checkBounds(225, angle, 315)) {
-            magnitude = (this.position.y - this.radius)/Math.sin(angle);
+            magnitude = (this.position.y + 2*this.radius)/Math.sin(angle);
         }
         else
             magnitude = 1;
-        cubicPoint = new Vector2d(magnitude * Math.cos(angle), magnitude * Math.cos(angle));
-        return cubicPoint;
+        cubicPoint = new Vector2d(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
+        return cubicPoint;*/
+
+        angle *= (Math.PI/180);
+        let col = new Vector2d(this.radius * Math.cos(angle) + this.position.x, this.radius * Math.cos(angle) + this.position.y);
+        return col;
+
     }
 
 
-    drawSphere() {
+    drawSquare() {
         canvasContext.fillStyle = this.color;
-        canvasContext.drawRect(this.position.x, this.position.y, this.radius, this.radius, this.color);
+        canvasContext.fillRect(this.position.x, this.position.y, this.radius*2, this.radius*2, this.color);
     }
 
 }
@@ -385,7 +390,7 @@ function handleMouseClick() {
     if(selectedTarget) {
         targetArray.push(new Sphere(currentMousePosition, 10, "Red"));
     } else {
-        obstacleArray.push(new Square(currentMousePosition, 10, "Black"));
+        obstacleArray.push(new Square(currentMousePosition, 10, "#808080"));
     }
 }
 
@@ -404,13 +409,21 @@ function generateObstacle(color) {
     XBound = new Vector2d(0, canvas.width);
     YBound = new Vector2d(0, canvas.height);
     let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
+    obstacle = new Square(position, 10, color);
+    return obstacle;
+}
+
+function generateTarget(color) {
+    XBound = new Vector2d(0, canvas.width);
+    YBound = new Vector2d(0, canvas.height);
+    let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
     obstacle = new Sphere(position, 10, color);
     return obstacle;
 }
 
 function loadExtras() {
-    obstacleArray.push(generateObstacle("Black"));
-    targetArray.push(generateObstacle("Red"));
+    obstacleArray.push(generateObstacle("#808080"));
+    targetArray.push(generateTarget("Red"));
 }
 
 function loadInformation() {
@@ -446,7 +459,7 @@ function drawObjects() {
     });
 
     obstacleArray.forEach(Sphere => {
-        Sphere.drawSphere();
+        Sphere.drawSquare();
     })
 
     targetArray.forEach(Sphere => {
