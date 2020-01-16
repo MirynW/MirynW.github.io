@@ -48,7 +48,7 @@ class Vector2d {
 }
 
 class Boid {
-    constructor(color, position, velocity, acceleration, visionRadius, maxForce) {
+    constructor(color, position, velocity, acceleration, visionRadius, maxForce, index) {
         this.color = color;         // HTML Color
         this.position = position;   // Vector2d
         this.velocity = velocity;         // floating point
@@ -58,9 +58,10 @@ class Boid {
         this.maxForce = 1;
         this.maxSpeed = 4;
         this.lastVisitedTarget = null;
+        this.index = index;
     }
 
-
+    /*
     // Alignment
     alignment() {
         let average = new Vector2d(0,0);
@@ -77,7 +78,6 @@ class Boid {
             average.divide(new Vector2d(numNeighbors, numNeighbors));
             average.setMagnitude(this.maxSpeed);
             // Steering formula
-            /*desired_velocity - current_velocity*/ 
             average.subtraction(this.velocity);
             average.limit(new Vector2d(this.maxForce, this.maxForce));
         }
@@ -100,7 +100,7 @@ class Boid {
         if(numNeighbors > 0) {
             average.divide(new Vector2d(numNeighbors, numNeighbors));
             // Steering formula
-            /*desired_velocity - current_velocity*/ 
+            // desired_velocity - current_velocity
             average.subtraction(this.position);
             average.setMagnitude(this.maxSpeed);
             average.subtraction(this.velocity);
@@ -132,7 +132,7 @@ class Boid {
         if(numNeighbors > 0) {
             average.divide(new Vector2d(numNeighbors, numNeighbors));
             // Steering formula
-            /*desired_velocity - current_velocity*/ 
+            // desired_velocity - current_velocity
             average.setMagnitude(this.maxSpeed);
             average.subtraction(this.velocity);
             average.limit(new Vector2d(this.maxForce, this.maxForce));
@@ -140,7 +140,7 @@ class Boid {
             
     
         return average;
-    }
+    }*/
 
     obstacleAvoidance() {
         let average = new Vector2d(0,0);
@@ -205,6 +205,67 @@ class Boid {
         return average;
     }
 
+    combinedBoidAlgorithm() {
+        let averageSeparation = new Vector2d(0,0);
+        let numNeighborsSeparation = 0;
+        let averageCohesion = new Vector2d(0,0);
+        let numNeighborsCohesion = 0;
+        let averageAlignment = new Vector2d(0,0);
+        let numNeighborsAlignment = 0;
+        boidArray.forEach(Boid => {
+            if(this.position.distance(Boid.position) < this.visionRadius)
+                if(Boid != this && this.isInView(Boid.position)) {
+                    // Separation
+                    let dist = this.position.distance(Boid.position);
+                    let difference = new Vector2d(1,1);
+                    difference.multiplication(this.position);
+                    difference.subtraction(Boid.position);
+                    // magnitude is inversely proportional to the distance between boids
+                    difference.divide(new Vector2d(dist*dist,dist*dist));
+                    averageSeparation.summation(difference);
+                    numNeighborsSeparation++;
+                    // Cohesion
+                    averageCohesion.summation(Boid.position);
+                    numNeighborsCohesion++;
+                    // Alignment
+                    averageAlignment.summation(Boid.velocity);
+                    numNeighborsAlignment++;
+                }
+        });
+        // take average
+        if(numNeighborsSeparation > 0) {
+            averageSeparation.divide(new Vector2d(numNeighborsSeparation, numNeighborsSeparation));
+            // Steering formula
+            /*desired_velocity - current_velocity*/ 
+            averageSeparation.setMagnitude(this.maxSpeed);
+            averageSeparation.subtraction(this.velocity);
+            averageSeparation.limit(new Vector2d(this.maxForce, this.maxForce));
+        }
+
+        // take average
+        if(numNeighborsCohesion > 0) {
+            averageCohesion.divide(new Vector2d(numNeighborsCohesion, numNeighborsCohesion));
+            // Steering formula
+            /*desired_velocity - current_velocity*/ 
+            averageCohesion.subtraction(this.position);
+            averageCohesion.setMagnitude(this.maxSpeed);
+            averageCohesion.subtraction(this.velocity);
+            averageCohesion.limit(new Vector2d(this.maxForce, this.maxForce));
+        }
+        // take average
+        if(numNeighborsAlignment > 0) {
+            averageAlignment.divide(new Vector2d(numNeighborsAlignment, numNeighborsAlignment));
+            averageAlignment.setMagnitude(this.maxSpeed);
+            // Steering formula
+            /*desired_velocity - current_velocity*/ 
+            averageAlignment.subtraction(this.velocity);
+            averageAlignment.limit(new Vector2d(this.maxForce, this.maxForce));
+        }
+        averageAlignment.summation(averageCohesion);
+        averageSeparation.summation(averageAlignment);
+        return averageSeparation;
+    }
+
     isInView(other) {
         let theta1 = this.position.getAngle(this.velocity);
         let theta2 = this.position.getAngle(other);
@@ -218,6 +279,7 @@ class Boid {
     // Can change later but in general draws a boid to the canvas
     drawBoid() {
         canvasContext.fillStyle = this.color;
+        canvasContext.strokeStyle = this.color;
 		canvasContext.beginPath();
 		canvasContext.arc(this.position.x, this.position.y, 4, 0, Math.PI*2, true);
         canvasContext.fill();
@@ -228,15 +290,20 @@ class Boid {
     }
 
     flockingAlgorithm() {
+        /*
         let steeringAlignment = this.alignment();
         let steeringCohesion = this.cohesion();
         let steeringSeparation = this.separation();
+        */
+        let steeringACS = this.combinedBoidAlgorithm();
         let obAvoid = this.obstacleAvoidance();
         let targetVelocity = this.target();
-
+        /*
         this.acceleration.summation(steeringAlignment);
         this.acceleration.summation(steeringCohesion);
         this.acceleration.summation(steeringSeparation);
+        */
+       this.acceleration.summation(steeringACS);
         this.acceleration.summation(obAvoid);
         this.acceleration.summation(targetVelocity);
     }
@@ -341,13 +408,53 @@ class Square {
 
 }
 
+class Edge {
+    constructor(v1,v2) {
+        this.v1 = v1;
+        this.v2 = v2;
+    }
+
+    drawLine() {
+        canvasContext.beginPath();
+        canvasContext.moveTo(this.v1.x, this.v1.y);
+        canvasContext.lineTo(this.v2.x, this.v2.y);
+        canvasContext.lineWidth = 1;
+        canvasContext.strokeStyle = distanceToColor(this);
+        canvasContext.stroke();
+    }
+
+}
+
+// Keep track of edges
+
 
 window.onload = function() {
 	canvas = document.getElementById('canvas_boids');
     canvasContext = canvas.getContext('2d');
+    var newMatrix = [];
     //loadExtras();
-    for(i=0; i<100; i++) {
-        loadInformation();
+    for(i=0; i<numberBoids; i++) {
+        loadInformation(i);
+        if (!adjacencyMatrix[i]) adjacencyMatrix[i] = [];
+    }
+    this.boxSize = 75;
+    for(i=0; i<this.canvas.width; i+=gapSize + this.obstacleRadius) {
+        for(j=0; j<this.canvas.height; j+=gapSize + this.obstacleRadius) {
+            if(this.Math.random() > 0.3) {
+                XBound = new Vector2d(i, i+this.boxSize);
+                YBound = new Vector2d(j, j+this.boxSize);
+                let position = createRandomVector2d(XBound.x, YBound.x, XBound.y, YBound.y);
+                let obstacle = new Square(position, 20, rgbToHex(100,100,200));
+                this.obstacleArray.push(obstacle);
+            }
+            else {
+                XBound = new Vector2d(0, canvas.width);
+                YBound = new Vector2d(0, canvas.height);
+                let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
+                target = new Sphere(position, 10, rgbToHex(200,50,50));
+                this.targetArray.push(target);
+            }
+        }
     }
     canvas.addEventListener('mousedown',handleMouseClick)
 			canvas.addEventListener('mousemove',
@@ -372,9 +479,22 @@ var RBound;
 var boidArray = [];
 var obstacleArray = [];
 var targetArray = [];
+var edgeArray = [];
 var selectedObstacle = false;
 var selectedTarget = false;
 var currentMousePosition = 0;
+var showConnections = false;
+var adjacencyMatrix = [[],[]];
+var numberBoids = 200;
+
+// Poisson Disk Distribution Grid
+var poissonDiskDistGrid = [[],[]];
+var boxSize = 0;
+var gapSize = 100;   // 10px
+var targetRadius = 10;  // define radius sizes
+var obstacleRadius = 20;
+
+
 
 function selectObstacle() {
     selectedObstacle = true;
@@ -386,11 +506,18 @@ function selectTarget() {
     selectedTarget = true;
 }
 
+function selectConnections() {
+    if(showConnections)
+        showConnections = false;
+    else
+        showConnections = true;
+}
+
 function handleMouseClick() {
     if(selectedTarget) {
-        targetArray.push(new Sphere(currentMousePosition, 10, "Red"));
+        targetArray.push(new Sphere(currentMousePosition, targetRadius, rgbToHex(200,50,50)));
     } else {
-        obstacleArray.push(new Square(currentMousePosition, 10, "#808080"));
+        obstacleArray.push(new Square(currentMousePosition, obstacleRadius, rgbToHex(100,100,200)));
     }
 }
 
@@ -409,7 +536,7 @@ function generateObstacle(color) {
     XBound = new Vector2d(0, canvas.width);
     YBound = new Vector2d(0, canvas.height);
     let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
-    obstacle = new Square(position, 10, color);
+    obstacle = new Square(position, 20, color);
     return obstacle;
 }
 
@@ -426,7 +553,7 @@ function loadExtras() {
     targetArray.push(generateTarget("Red"));
 }
 
-function loadInformation() {
+function loadInformation(index) {
     LBound = new Vector2d(0, canvas.width);
     RBound = new Vector2d(0, canvas.height);
     let position = createRandomVector2d(LBound.x, RBound.x, LBound.y, RBound.y);
@@ -436,14 +563,40 @@ function loadInformation() {
     let scalar_a = new Vector2d(Fps/accelerationCap, Fps/accelerationCap);
     //velocity.divide(scalar_v);
     //acceleration.divide(scalar_a);
-    boidArray.push( new Boid( '#000000', position, velocity, acceleration, 50, 1) );
+    boidArray.push( new Boid( '#000000', position, velocity, acceleration, 50, 1, index) );
+    
 }
         
 // CHECK() the status of the game, update all variables. - Called every interval
+// Trying to use an adjacency matrix to prevent duplicate edges algorithm is n^2 but limits number of edges that need to be drawn to a reasonable amount
 function check() {
     boidArray.forEach(Boid => {
         Boid.boidUpdate();
+        
     });
+    for(i=0; i<100; i++)
+        for(j=0; j<100; j++)
+            adjacencyMatrix[i][j] = 0;
+    if(showConnections) {
+        boidArray.forEach(Boid => {
+            boidArray.forEach(Other => {
+                if(Other != Boid) {
+                    let dist = Other.position.distance(Boid.position);
+                    if(adjacencyMatrix[Boid.index][Other.index] == 1 && dist < Boid.visionRadius && Other.isInView(Boid.position)) {
+                        let v1 = new Vector2d(Other.position.x, Other.position.y);
+                        let v2 = new Vector2d(Boid.position.x, Boid.position.y);
+                        edgeArray.push(new Edge(v1, v2));
+                        adjacencyMatrix[Boid.index][Other.index] == 0;
+                    }
+                    else if(dist < Boid.visionRadius && Other.isInView(Boid.position) && adjacencyMatrix[Boid.index][Other.index] == 0) {
+                        adjacencyMatrix[Boid.index][Other.index] = 1;
+                        adjacencyMatrix[Other.index][Boid.index] = 1;
+                    }
+                }
+            });
+            
+        });
+    }
 }
 
 function update() {
@@ -460,11 +613,16 @@ function drawObjects() {
 
     obstacleArray.forEach(Sphere => {
         Sphere.drawSquare();
-    })
+    });
 
     targetArray.forEach(Sphere => {
         Sphere.drawSphere();
-    })
+    });
+
+    edgeArray.forEach(Edge => {
+        Edge.drawLine();
+        edgeArray.shift();
+    });
 }
 
 // Ways to draw objects
@@ -493,4 +651,22 @@ function checkBounds(a,b,c) {
     if(a < b && b < c)
         return true;
     return false;
+}
+
+function distanceToColor(e) {
+    let dist = e.v1.distance(e.v2);
+    let angle = e.v1.getAngle(e.v2);
+    dist = clamp(dist, 0, 255);
+    angle = clamp(angle,0,255);
+    return rgbToHex(dist, 255-angle, 150); 
+}
+
+// Made by random person on stack overflow
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+// General clamp function
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
 }

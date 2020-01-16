@@ -12,17 +12,23 @@
     <h4>Flocking Algorithm</h4>
     <h5>- Michael R. Nickerson</h5>
     <div class="canvas_style">
-        <canvas id="canvas_boids" width="700" height="400"></canvas>\
+        <canvas id="canvas_boids" width="700" height="400"></canvas>
         <br>
         <button onclick="selectTarget()">Add Target</button>
         <button onclick="selectObstacle()">Add Obstacle</button>
+        <button onclick="selectConnections()">Show Connections</button>
+        <br>
+        <b>Vision Radius: </b><input id="cvr_input"><button onclick="changeVisionRadius()">Change</button>
+        <br>
+        <b>Turn Radius: </b><input id="ctr_input"><button onclick="changeTurnRadius()">Change</button>
+
     </div>
     <ul>
-        <li>Implement Raycasting for collision detection/avoidance of obstacles</li>
-        <li>Implement UI for placing obstacles</li>
-        <li>Add to main website</li>
+        <li>Implement Raycasting for collision detection/avoidance of different types of obstacles</li>
+        <li>Improve UI for placing obstacles</li>
         <li>Make 3d version following the same principles</li>
-        <li>Use point cloud with surface reconstruction to create dynamic obstacle avoidance terrain</li>
+        <li>Improve point cloud to surface reconstruction to create dynamic obstacle avoidance</li>
+        <li>Add Poisson Distribution for randomly generated enviornments with a limited obstacle density</li>
         <li>Add targeting system</li>
     </ul>
 
