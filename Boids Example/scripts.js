@@ -54,7 +54,7 @@ class Boid {
         this.velocity = velocity;         // floating point
         this.acceleration = acceleration;   // Vector2d
         this.visionRadius = visionRadius;
-        this.turnRadius = 90;
+        this.turnRadius = turnRadius_Global;
         this.maxForce = 1;
         this.maxSpeed = 4;
         this.lastVisitedTarget = null;
@@ -431,7 +431,6 @@ class Edge {
 window.onload = function() {
 	canvas = document.getElementById('canvas_boids');
     canvasContext = canvas.getContext('2d');
-    var newMatrix = [];
     //loadExtras();
     for(i=0; i<numberBoids; i++) {
         loadInformation(i);
@@ -486,6 +485,8 @@ var currentMousePosition = 0;
 var showConnections = false;
 var adjacencyMatrix = [[],[]];
 var numberBoids = 200;
+var visionRadius = 50;
+var turnRadius_Global = 90;
 
 // Poisson Disk Distribution Grid
 var poissonDiskDistGrid = [[],[]];
@@ -522,6 +523,7 @@ function changeVisionRadius() {
     boidArray.forEach(Boid => {
         Boid.visionRadius = value;
     });
+    visionRadius = value;
 }
 
 function changeTurnRadius() {
@@ -536,6 +538,7 @@ function changeTurnRadius() {
     boidArray.forEach(Boid => {
         Boid.turnRadius = value;
     });
+    turnRadius_Global = value;
 }
 
 function spawnBoids() {
@@ -545,7 +548,6 @@ function spawnBoids() {
     if(value < 0) {
         setTimeout(check, update, 1000);
         for(i=0; i<value*-1 && boidArray.length > 0; i++) {
-            console.log(i);
             boidArray.pop();
             numberBoids--;
         }  
@@ -611,7 +613,7 @@ function loadInformation(index) {
     let scalar_a = new Vector2d(Fps/accelerationCap, Fps/accelerationCap);
     //velocity.divide(scalar_v);
     //acceleration.divide(scalar_a);
-    boidArray.push( new Boid( '#000000', position, velocity, acceleration, 50, 1, index) );
+    boidArray.push( new Boid( '#000000', position, velocity, acceleration, visionRadius, 1, index) );
     
 }
         
@@ -622,8 +624,8 @@ function check() {
         Boid.boidUpdate();
         
     });
-    for(i=0; i<100; i++)
-        for(j=0; j<100; j++)
+    for(i=0; i<numberBoids; i++)
+        for(j=0; j<numberBoids; j++)
             adjacencyMatrix[i][j] = 0;
     if(showConnections) {
         boidArray.forEach(Boid => {
