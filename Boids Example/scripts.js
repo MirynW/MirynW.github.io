@@ -438,8 +438,8 @@ window.onload = function() {
         if (!adjacencyMatrix[i]) adjacencyMatrix[i] = [];
     }
     this.boxSize = 75;
-    for(i=0; i<this.canvas.width; i+=gapSize + this.obstacleRadius) {
-        for(j=0; j<this.canvas.height; j+=gapSize + this.obstacleRadius) {
+    for(i=0; i<this.canvas.width-boxSize; i+=gapSize + this.obstacleRadius + boxSize) {
+        for(j=0; j<this.canvas.height-boxSize; j+=gapSize + this.obstacleRadius + boxSize) {
             if(this.Math.random() > 0.3) {
                 XBound = new Vector2d(i, i+this.boxSize);
                 YBound = new Vector2d(j, j+this.boxSize);
@@ -450,7 +450,7 @@ window.onload = function() {
             else {
                 XBound = new Vector2d(0, canvas.width);
                 YBound = new Vector2d(0, canvas.height);
-                let position = createRandomVector2d(XBound.x + 10, YBound.x + 10, XBound.y - 10, YBound.y - 10);
+                let position = createRandomVector2d(XBound.x, YBound.x, XBound.y, YBound.y);
                 target = new Sphere(position, 10, rgbToHex(200,50,50));
                 this.targetArray.push(target);
             }
@@ -490,7 +490,7 @@ var numberBoids = 200;
 // Poisson Disk Distribution Grid
 var poissonDiskDistGrid = [[],[]];
 var boxSize = 0;
-var gapSize = 100;   // 10px
+var gapSize = 30;   // 10px
 var targetRadius = 10;  // define radius sizes
 var obstacleRadius = 20;
 
@@ -512,6 +512,54 @@ function selectConnections() {
     else
         showConnections = true;
 }
+
+function changeVisionRadius() {
+    value = document.getElementById('cvr_input').value;
+    if(value == null)
+        return;
+    value = clamp(value, 0, canvas.width * canvas.height);
+    setTimeout(check, update, 1000);
+    boidArray.forEach(Boid => {
+        Boid.visionRadius = value;
+    });
+}
+
+function changeTurnRadius() {
+    value = document.getElementById('ctr_input').value;
+    if(value == null)
+        return;
+    if(value < 0)
+        value = 360+value;
+    value %= 360;
+    value = clamp(value, 0, 360);
+    setTimeout(check, update, 1000);
+    boidArray.forEach(Boid => {
+        Boid.turnRadius = value;
+    });
+}
+
+function spawnBoids() {
+    value = document.getElementById('swn_input').value;
+    if(value == null)
+        return;
+    if(value < 0) {
+        setTimeout(check, update, 1000);
+        for(i=0; i<value*-1 && boidArray.length > 0; i++) {
+            console.log(i);
+            boidArray.pop();
+            numberBoids--;
+        }  
+    }
+    else {
+        setTimeout(check, update, 1000);
+        for(i=0; i<value; i++) {
+            loadInformation(i+numberBoids);
+            if (!adjacencyMatrix[i + numberBoids]) adjacencyMatrix[i + numberBoids] = [];
+        }  
+        numberBoids += value;
+    }
+}
+
 
 function handleMouseClick() {
     if(selectedTarget) {
