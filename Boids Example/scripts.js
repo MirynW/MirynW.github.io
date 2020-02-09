@@ -1,4 +1,80 @@
 // Define classes
+
+/*
+HashTable Class
+    This is going to be used to store the edges and remove and duplicates
+===========================================================================
+Concept:
+    We store the edge as a key based on the summation of the edge.x + edge.y
+    This ensures that we get duplicate keys whenever we have a case (a,b) or (b,a)
+    and can delete the duplicate, we will use chaining to handle collisions
+*/
+class HashTable {
+    constructor(capacity) {
+        this.capacity = capacity
+        this.table = new Array(capacity);
+        this.size = 0;
+        for(let i=0; i<capacity; i++)
+            this.table[i] = null;
+    }
+    // Including this as a function in case I want to change the way hashcodes are handled for edges or make this a generic class
+    getHashCode(edge) {
+        return edge.v1 * edge.v2;
+    }
+    // Expensive operation
+    resize(newCapacity) {
+        let temporaryArray = new Array(this.capacity);
+        let temporaryCapacity = this.capacity;
+        this.capacity = newCapacity
+        for(let i=0; i<temporaryCapacity; i++)
+            temporaryArray[i] = this.table[i];
+        this.table = new Array(this.capacity);
+        for(let i=0; i<temporaryCapacity; i++)
+            if(temporaryArray[i] != null)
+                this.put(temporaryArray[i]);
+        temporaryArray = null;
+    }
+    put(edge) {
+        if(this.size >= 3.0/4.0 * this.capacity)     // resize at 75% capacity
+            this.resize(this.capacity * 2);
+        let index = this.getHashCode(edge)%this.capacity;
+        while(this.table[index] != null) {
+            if(this.table[index].compare(edge) == 1)    // no duplicate edges - what is condsidered a duplicate is defined by the edge class
+            return;
+            index = (index + 1)%this.capacity;
+        }
+        this.table[index] = edge;
+        this.size++;
+    }
+    get(edge) {
+        let index = this.getHashCode(edge)%this.capacity;
+        while(this.table[index] != null && this.table[index].compare(edge) == 0) {
+            index = (index + 1)%this.capacity;
+        }
+        if(this.table[index] == null)
+            return null;
+        if(this.table[index].compare(edge) == 1)
+            return this.table[index];       // for our use, saying its a null or an object is clear enough to say there is or isn't a line - but we are storing the whole object anyways --- Look for a more efficient method
+    }
+    delete(edge) {
+        let index = this.getHashCode(edge)%this.capacity;
+        while(this.table[index] != null && this.table[index].compare(edge) == 0) {
+            index = (index + 1)%this.capacity;
+        }
+        if(this.table[index] == null)
+            return 0;
+        if(this.table[index].compare(edge) == 1) {
+            this.table[index] = null;
+            return 1;
+        }
+    }
+}
+
+/*
+Simple Vector class
+    Operations are vector on vector rather than scalar since this can be avoided just by creating a vector object of one and setting its magnitude then multiplying it by the target vector
+    Rotations are not implemented but may be implemented using polar coordinates as one is able to get the angle and magnitude components of the given vector
+*/ 
 class Vector2d {
     constructor(x,y) {
         this.x = x;
@@ -47,6 +123,10 @@ class Vector2d {
     }
 }
 
+/* 
+Boid Flocking Algorithm Class
+    Keeps all the code for each bird in a class, the given methods are for the flocking algorithm behavior
+*/
 class Boid {
     constructor(color, position, velocity, acceleration, visionRadius, maxForce, index) {
         this.color = color;         // HTML Color
@@ -265,7 +345,8 @@ class Boid {
         averageSeparation.summation(averageAlignment);
         return averageSeparation;
     }
-
+    
+    /* Ensures that a given boid is visible depending on the objects turn radius*2 */
     isInView(other) {
         let theta1 = this.position.getAngle(this.velocity);
         let theta2 = this.position.getAngle(other);
@@ -289,6 +370,7 @@ class Boid {
         canvasContext.stroke();
     }
 
+    // Call the behavior functions and get the changes to acceleration 
     flockingAlgorithm() {
         /*
         let steeringAlignment = this.alignment();
@@ -303,11 +385,12 @@ class Boid {
         this.acceleration.summation(steeringCohesion);
         this.acceleration.summation(steeringSeparation);
         */
-       this.acceleration.summation(steeringACS);
+        this.acceleration.summation(steeringACS);
         this.acceleration.summation(obAvoid);
         this.acceleration.summation(targetVelocity);
     }
 
+    /* Calls all functions dependent on updating the boid's physics and ensures that they stay in bounds */
     boidUpdate() {
         this.flockingAlgorithm();       // There goes my alignment boys
         this.position.summation(this.velocity); // update position based on velocity
@@ -326,6 +409,7 @@ class Boid {
 
 }
 
+/* Target class for a sphere */
 class Sphere {
     constructor(position, radius, color) {
         this.position = position;
@@ -351,6 +435,7 @@ class Sphere {
 
 }
 
+/* Obstacle class for a square */
 class Square {
     constructor(position, radius, color) {
         this.position = position;
@@ -359,7 +444,10 @@ class Square {
     }
     
 
-    // Spherical collision is fairly straightforward
+    // Spherical collision is fairly straightforward - However cubic colision is not
+    // To elaborate why its different, we aren't checking for intersection, we are checking for how close the boid is to the side
+    // This means that we need to get a point on the square based on the angle of the boid then take the distance - The code down below is close
+    // to the right math but needs to be debugged... For now it is just a sphere
     rayCollision(angle) {
         //angle *= (Math.PI/180);
         // Figure out where the ray at the given angle is colliding with the wall of the cube
@@ -408,10 +496,22 @@ class Square {
 
 }
 
+/*
+Edge class 
+    used to hold the indices of boids that are affected by each other, effectively creating a "behavior graph"
+    The draw function is mainly there for ease of use.
+*/
 class Edge {
     constructor(v1,v2) {
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    compare(edge) {
+        if((edge.v1 == this.v1 && edge.v2 == this.v2) || 
+                (edge.v1 == this.v1 && edge.v2 == this.v1))
+            return 1;
+        return 0;
     }
 
     drawLine() {
@@ -427,15 +527,19 @@ class Edge {
 
 // Keep track of edges
 
-
+/*
+Ensure the script runs when the user loads the page
+Sets up any needed data for the simulation
+*/
 window.onload = function() {
 	canvas = document.getElementById('canvas_boids');
     canvasContext = canvas.getContext('2d');
     //loadExtras();
-    for(i=0; i<numberBoids; i++) {
+    table = new HashTable(500);
+    /*for(i=0; i<numberBoids; i++) {
         loadInformation(i);
         if (!adjacencyMatrix[i]) adjacencyMatrix[i] = [];
-    }
+    }*/
     this.boxSize = 75;
     for(i=0; i<this.canvas.width-boxSize; i+=gapSize + this.obstacleRadius + boxSize) {
         for(j=0; j<this.canvas.height-boxSize; j+=gapSize + this.obstacleRadius + boxSize) {
@@ -484,6 +588,7 @@ var selectedTarget = false;
 var currentMousePosition = 0;
 var showConnections = false;
 var adjacencyMatrix = [[],[]];
+var table;
 var numberBoids = 200;
 var visionRadius = 50;
 var turnRadius_Global = 90;
@@ -496,7 +601,7 @@ var targetRadius = 10;  // define radius sizes
 var obstacleRadius = 20;
 
 
-
+/*<-------- USER INPUT --------> */
 function selectObstacle() {
     selectedObstacle = true;
     selectedTarget = false;
@@ -555,8 +660,8 @@ function spawnBoids() {
     else {
         setTimeout(check, update, 1000);
         for(i=0; i<value; i++) {
+            //if (!adjacencyMatrix[i + numberBoids]) adjacencyMatrix[i + numberBoids] = [];
             loadInformation(i+numberBoids);
-            if (!adjacencyMatrix[i + numberBoids]) adjacencyMatrix[i + numberBoids] = [];
         }  
         numberBoids += value;
     }
@@ -581,6 +686,8 @@ function calculateMousePos(evt) {
         y:mouseY
         };
 }
+
+/*<-------- Instantiation --------> */
 
 function generateObstacle(color) {
     XBound = new Vector2d(0, canvas.width);
@@ -624,15 +731,15 @@ function check() {
         Boid.boidUpdate();
         
     });
-    for(i=0; i<numberBoids; i++)
+    /*for(i=0; i<numberBoids; i++)
         for(j=0; j<numberBoids; j++)
-            adjacencyMatrix[i][j] = 0;
+            adjacencyMatrix[i][j] = 0;*/
     if(showConnections) {
         boidArray.forEach(Boid => {
             boidArray.forEach(Other => {
                 if(Other != Boid) {
                     let dist = Other.position.distance(Boid.position);
-                    if(adjacencyMatrix[Boid.index][Other.index] == 1 && dist < Boid.visionRadius && Other.isInView(Boid.position)) {
+                    /*if(adjacencyMatrix[Boid.index][Other.index] == 1 && dist < Boid.visionRadius && Other.isInView(Boid.position)) {
                         let v1 = new Vector2d(Other.position.x, Other.position.y);
                         let v2 = new Vector2d(Boid.position.x, Boid.position.y);
                         edgeArray.push(new Edge(v1, v2));
@@ -641,6 +748,15 @@ function check() {
                     else if(dist < Boid.visionRadius && Other.isInView(Boid.position) && adjacencyMatrix[Boid.index][Other.index] == 0) {
                         adjacencyMatrix[Boid.index][Other.index] = 1;
                         adjacencyMatrix[Other.index][Boid.index] = 1;
+                    }*/
+                    if(table.get(new Edge(Boid.index, Other.index)) == null && dist < Boid.visionRadius && Other.isInView(Boid.position)) {
+                        table.put(new Edge(Boid.index, Other.index));
+                    }
+                    if(table.get(new Edge(Boid.index, Other.index)) != null) {
+                        let v1 = new Vector2d(Other.position.x, Other.position.y);
+                        let v2 = new Vector2d(Boid.position.x, Boid.position.y);
+                        edgeArray.push(new Edge(v1, v2));
+                        table.delete(new Edge(Boid.index, Other.index));
                     }
                 }
             });
@@ -649,6 +765,9 @@ function check() {
     }
 }
 
+/*
+Called every frame, anything that needs to be updated every frame can go here
+*/
 function update() {
     drawObjects();
 }
