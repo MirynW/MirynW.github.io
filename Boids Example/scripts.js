@@ -71,6 +71,49 @@ class HashTable {
 }
 
 /*
+Class Convect Hull
+takes in the array of boids, passed by reference so that a copy isn't made and so that the hull can be updated automatically
+on update, we delete the edge array containing the convex hull and create a new one, then draw it based on the draw function
+draw() will iterate through each edge and draw - We can use a hashmap to eliminate any duplicate edges
+
+ */
+class ConvexHull {
+    constructor(boid_list) {
+        this.boid_list = boid_list;
+        this.convexhull = new HashTable()
+    }
+
+    update() {
+
+    }
+
+    draw() {
+        
+    }
+
+    getOrientation(v1, v2, V3) {
+        let orientation = (v2.y-v1.y)*(v3.x-v2.x)-(v3.y-v2.y)*(v2.x-v1.x);
+        if(orientation < 0)     // Counter clockwise
+            return -1;
+        else if(orientation > 0)        // Clockwise 
+            return 1;
+        else                // Colinear
+            return 0;       
+    }
+}
+
+class Partition {
+    constructor(array_of_boids, partitionHeight, partitionWidth) {
+        this.array_of_boids = array_of_boids;
+        this.partitionSize = array_of_boids[0].visionRadius;
+        this.partitionWidth = partitionWidth;
+        this.partitionHeight = partitionHeight;
+    }
+// Consider using a hashMap to map each boid to their respective partition
+
+}
+
+/*
 Simple Vector class
     Operations are vector on vector rather than scalar since this can be avoided just by creating a vector object of one and setting its magnitude then multiplying it by the target vector
     Rotations are not implemented but may be implemented using polar coordinates as one is able to get the angle and magnitude components of the given vector
@@ -247,7 +290,7 @@ class Boid {
             average.divide(new Vector2d(numNeighbors, numNeighbors));
             // Steering formula
             /*desired_velocity - current_velocity*/ 
-            average.setMagnitude(this.maxSpeed);
+            average.setMagnitude(this.maxSpeed*2);
             average.subtraction(this.velocity);
             average.limit(new Vector2d(this.maxForce, this.maxForce));
         }
@@ -276,7 +319,7 @@ class Boid {
             // Steering formula
             /*desired_velocity - current_velocity*/ 
             average.subtraction(this.position);
-            average.setMagnitude(this.maxSpeed);
+            average.setMagnitude(this.maxSpeed/1.5);
             average.subtraction(this.velocity);
             average.limit(new Vector2d(this.maxForce, this.maxForce));
         }
@@ -317,7 +360,7 @@ class Boid {
             averageSeparation.divide(new Vector2d(numNeighborsSeparation, numNeighborsSeparation));
             // Steering formula
             /*desired_velocity - current_velocity*/ 
-            averageSeparation.setMagnitude(this.maxSpeed);
+            averageSeparation.setMagnitude(this.maxSpeed*2);
             averageSeparation.subtraction(this.velocity);
             averageSeparation.limit(new Vector2d(this.maxForce, this.maxForce));
         }
@@ -587,6 +630,7 @@ var selectedObstacle = false;
 var selectedTarget = false;
 var currentMousePosition = 0;
 var showConnections = false;
+var showConvex = false;
 var adjacencyMatrix = [[],[]];
 var table;
 var numberBoids = 200;
@@ -617,6 +661,13 @@ function selectConnections() {
         showConnections = false;
     else
         showConnections = true;
+}
+
+function selectConvex() {
+    if(showConvex)
+        showConvex = false;
+    else
+        showConvex = true;
 }
 
 function changeVisionRadius() {
