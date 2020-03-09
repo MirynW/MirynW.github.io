@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="main.css">
+    <title>GraphJS</title>
+</head>
+<body>
+    <h1>GraphJS</h1>
+    <h4>Graph And UI</h4>
+    <h5>- Michael R. Nickerson</h5>
+
+    <section class="user-container user-tools">
+        <div class="input">
+                    <legend class="legend" onclick="show()">Add New Box</legend>
+                    <div class="user-input hide">
+                        <label for="title">Title</label>
+                        <input id="form-title" type="text">
+                        <label for="date">Date Due</label>
+                        <input id="small" type="text">
+                        <br>
+                        <div id="details">Details</div>
+                        <textarea name="details" id="form-details"></textarea>
+                        <br>
+                        <button class="submit" onclick="submit()">Submit</button>
+                    </div>
+        </div>
+    </section>
+
+
+    <!--Template for each canvas-->
+    <div class="canvas_style">
+        <canvas id="canvas_graph" width="500" height="300"></canvas>
+        <br>
+        <!--Add Buttons Here for user interface-->
+        <br>
+        <!--Add info input fields here for user interface-->
+
+        <div class="hidden side">
+            <form action="none">
+                <input type="text" class="domain_min">
+                <input type="text" class="domain_max">
+                <br>
+                <input type="text" class="range_min">
+                <input type="text" class="range_max">
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="render_container">
+
+
+
+    </div>
+
+    <div class="button container">
+        <button onclick="newGraph()">+</button>
+    </div>
+
+
+    <ul>
+        <li>
+            Implement general graph that can expand based on what values are being plotted dynamically.
+            This Should allow for value plotting that can be based on time or frequencies.
+            This will require a mapping function that can take a value or set of values and map them to a larger
+            or smaller range of values. Once pixel level precision is lost when expanding the graph, values that
+            were close in range_a will be condensed to a pixel or smaller set of pixels in range_b.
+        </li>
+        <li>
+            Allow for user defined time sampling for graphs that run over time.
+
+        </li>
+    </ul>
+
+    <script src="script.js"></script>
+</body>
+</html>
